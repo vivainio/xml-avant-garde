@@ -166,10 +166,19 @@ A quick map of the bigger features, each covered on its own page:
 
 | Feature | One-liner | Page |
 | --- | --- | --- |
+| Sequences & types | The `as=` type system that underpins everything below | [sequences and types](sequences-and-types.md) |
 | User-defined functions | Write your own XPath functions with `xsl:function` | [functions](functions.md) |
+| Higher-order functions | Functions as values: `fold-left`, `filter`, `=>` | [higher-order functions](higher-order-functions.md) |
+| Maps & arrays | Dictionaries and nested lists, the 3.1 data structures | [maps and arrays](maps-and-arrays.md) |
+| Reading & writing JSON | `parse-json`, maps & arrays, `method="json"` | [JSON](json.md) |
 | Grouping | `xsl:for-each-group` replaces the 1.0 "Muenchian" trick | [grouping](grouping.md) |
 | Regex & strings | `matches`, `replace`, `tokenize`, `xsl:analyze-string` | [regex](regex.md) |
+| Dates & times | Real date types, arithmetic, and `format-date` | [dates and times](dates-and-times.md) |
 | Modern identity & text | Declarative `xsl:mode` identity and text value templates | [modern identity and text](modern-identity.md) |
+| Multiple outputs | `xsl:result-document` writes many files in one run | [result documents](result-documents.md) |
+| Error handling | `xsl:try`/`xsl:catch`, `xsl:assert` | [error handling](error-handling.md) |
+| Streaming | Process documents too large to fit in memory | [streaming](streaming.md) |
+| Packages | `xsl:package` — real modules with visibility | [packages](packages.md) |
 
 ## 1.0 vs 2.0/3.0 at a glance
 
@@ -187,6 +196,6 @@ A quick map of the bigger features, each covered on its own page:
 
 ## Next
 
-[User-defined functions](functions.md) — the first place sequences and `as=`
-types really pay off: your own reusable XPath functions, callable anywhere an
-expression is allowed.
+[Sequences and types](sequences-and-types.md) — the model under everything on
+this list: what a sequence is, and how `as=` types turn silent bugs into
+compile-time errors.

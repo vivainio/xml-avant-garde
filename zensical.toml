@@ -47,6 +47,13 @@ nav = [
       { "Modern identity and text" = "xslt/modern-identity.md" },
     ] },
   ] },
+  { "XPath" = [
+    { "Overview" = "xpath/index.md" },
+    { "Location paths" = "xpath/location-paths.md" },
+    { "Axes" = "xpath/axes.md" },
+    { "Node tests and predicates" = "xpath/node-tests-predicates.md" },
+    { "Functions and data types" = "xpath/functions-and-types.md" },
+  ] },
 ]
 
 extra_css = ["stylesheets/extra.css"]

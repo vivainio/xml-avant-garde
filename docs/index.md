@@ -8,8 +8,8 @@ Hands-on, example-driven tutorials for the XML family of technologies. Every
 concept is introduced with a small, complete, runnable example — no walls of
 prose before you see real code.
 
-The site starts with **XSLT** and will grow to cover more of the stack (XPath,
-XSD, Schematron, and friends) over time.
+The site covers **XSLT** and **XPath**, and will grow to cover more of the stack
+(XSD, Schematron, and friends) over time.
 
 [Start the XSLT tutorial :material-arrow-right:](xslt/index.md){ .md-button .md-button--primary }
 
@@ -21,15 +21,23 @@ XSD, Schematron, and friends) over time.
 
     ---
 
-    Transform XML into HTML, text, or other XML. Learn templates, loops,
-    conditionals, and sorting through one running example.
+    Transform XML into HTML, text, or other XML. Templates, loops, conditionals,
+    sorting, and a full XSLT 2.0/3.0 section — through one running example.
 
     [:octicons-arrow-right-24: Open](xslt/index.md)
+
+-   :material-routes:{ .lg .middle } **XPath**
+
+    ---
+
+    The expression language XSLT is built on. Location paths, axes, node tests,
+    predicates, and the core function library.
+
+    [:octicons-arrow-right-24: Open](xpath/index.md)
 
 </div>
 
 ## More sections coming
 
-- **XPath** — the query language XSLT is built on
 - **XSD** — describing and validating document structure
 - **Schematron** — rule-based assertions over XML

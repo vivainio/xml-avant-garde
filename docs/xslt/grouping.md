@@ -2,9 +2,10 @@
 
 A recurring task is to take a flat list and reorganise it under headings — all
 the rock CDs together, then all the pop CDs. XSLT 1.0 had no grouping construct,
-so people reached for **Muenchian grouping**: declare an `xsl:key`, then select
-the first node in each key bucket with a `generate-id()` comparison. It worked,
-but it was famously opaque.
+so people reached for **Muenchian grouping**: declare an
+[`xsl:key`](keys.md#keys-for-grouping-muenchian), then select the first node in
+each key bucket with a `generate-id()` comparison. It worked, but it was famously
+opaque.
 
 XSLT 2.0 replaced the whole trick with one instruction, `xsl:for-each-group`.
 

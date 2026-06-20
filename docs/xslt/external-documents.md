@@ -157,20 +157,15 @@ result, so binding the document to a variable up front (as above) is mostly a
 matter of readability rather than performance. Even so, doing the load once and
 naming it keeps the lookups tidy.
 
-## Where next
+## Next
+
+The join above re-scans the code list on every lookup. For large
+cross-references that does not scale, and the next page fixes it:
+[Keys and indexed lookup](keys.md) — `xsl:key` and `key()` build the index once,
+turning the same `document()` join into a constant-time lookup.
 
 That rounds out the core of **XSLT 1.0**: templates and `apply-templates`,
 named templates and parameters, variables, control flow, XPath with predicates,
-string handling, output control, sorting — and now joining in external data
-with `document()`. With these you can express the great majority of everyday
-transformations.
-
-That completes the XSLT 1.0 toolkit. One topic still worth knowing in 1.0 is
-**`xsl:key` and `key()`** — for large cross-references an indexed lookup beats
-scanning a node-set with a predicate on every hit, and it is the scalable
-version of the `document()` join shown above.
-
-Beyond that, the language itself moved on. The next section,
-[Moving to XSLT 2.0 and 3.0](moving-to-3.md), picks up where 1.0 leaves off —
-sequences and types, real functions, native grouping, and regular expressions
-that retire most of the 1.0 workarounds you have just learned.
+string handling, output control, sorting, and joining in external data with
+`document()`. With these — plus keys next — you can express the great majority of
+everyday transformations.

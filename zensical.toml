@@ -39,6 +39,7 @@ nav = [
     { "Template modes" = "xslt/modes.md" },
     { "Reusing stylesheets" = "xslt/reuse.md" },
     { "External documents" = "xslt/external-documents.md" },
+    { "Keys and indexed lookup" = "xslt/keys.md" },
     { "XSLT 2.0 & 3.0" = [
       { "Moving to XSLT 2.0 and 3.0" = "xslt/moving-to-3.md" },
       { "User-defined functions" = "xslt/functions.md" },

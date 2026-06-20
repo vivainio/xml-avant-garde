@@ -9,7 +9,8 @@ concept is introduced with a small, complete, runnable example — no walls of
 prose before you see real code.
 
 The site covers the core of the XML processing stack: **XSLT**, **XPath**,
-**XSD**, and **Schematron**.
+**XSD**, and **Schematron** — then puts them all together on **real-world
+e-invoicing** (UBL, EN16931, Peppol).
 
 [Start the XSLT tutorial :material-arrow-right:](xslt/index.md){ .md-button .md-button--primary }
 
@@ -52,5 +53,15 @@ The site covers the core of the XML processing stack: **XSLT**, **XPath**,
     and calculations. Walked through the public EN16931 e-invoicing rules.
 
     [:octicons-arrow-right-24: Open](schematron/index.md)
+
+-   :material-receipt-text-outline:{ .lg .middle } **Real-world e-invoicing**
+
+    ---
+
+    Where it all meets a real problem: UBL invoices, the EN16931 validation
+    pipeline, Genericode code lists, and Peppol profiles — the whole XML stack at
+    full scale.
+
+    [:octicons-arrow-right-24: Open](einvoicing/index.md)
 
 </div>

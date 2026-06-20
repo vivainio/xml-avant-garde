@@ -70,6 +70,13 @@ nav = [
     { "Variables and messages" = "schematron/variables-and-messages.md" },
     { "Abstract patterns and EN16931" = "schematron/abstract-patterns-en16931.md" },
   ] },
+  { "Real-world e-invoicing" = [
+    { "Overview" = "einvoicing/index.md" },
+    { "Anatomy of a UBL invoice" = "einvoicing/ubl-invoice.md" },
+    { "The validation pipeline" = "einvoicing/validation-pipeline.md" },
+    { "Genericode code lists" = "einvoicing/genericode-codelists.md" },
+    { "Peppol and CIUS profiles" = "einvoicing/peppol-cius.md" },
+  ] },
 ]
 
 extra_css = ["stylesheets/extra.css"]

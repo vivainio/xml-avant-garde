@@ -69,3 +69,11 @@ focus on the XSLT rather than re-learning the data each time.
 13. [Template modes](modes.md) — processing the same nodes several ways.
 14. [Reusing stylesheets](reuse.md) — `xsl:include` and `xsl:import`.
 15. [External documents](external-documents.md) — lookups with `document()`.
+
+### XSLT 2.0 & 3.0
+
+16. [Moving to XSLT 2.0 and 3.0](moving-to-3.md) — sequences, the `as=` type system, what changed.
+17. [User-defined functions](functions.md) — `xsl:function`, callable from any XPath.
+18. [Grouping](grouping.md) — `xsl:for-each-group`, `current-group()`.
+19. [Regular expressions and strings](regex.md) — `tokenize`, `replace`, `xsl:analyze-string`.
+20. [Modern identity and text](modern-identity.md) — `on-no-match="shallow-copy"`, text value templates.

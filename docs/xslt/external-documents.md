@@ -165,15 +165,12 @@ string handling, output control, sorting — and now joining in external data
 with `document()`. With these you can express the great majority of everyday
 transformations.
 
-Natural directions from here:
+That completes the XSLT 1.0 toolkit. One topic still worth knowing in 1.0 is
+**`xsl:key` and `key()`** — for large cross-references an indexed lookup beats
+scanning a node-set with a predicate on every hit, and it is the scalable
+version of the `document()` join shown above.
 
-- **`xsl:key` and `key()`** — for large cross-references, an indexed lookup is
-  far faster than scanning a node-set with a predicate on every hit. It is the
-  scalable version of the join shown above.
-- **XSLT 2.0 / 3.0** — native grouping (`xsl:for-each-group`), so the recursive
-  and Muenchian workarounds of 1.0 fall away.
-- **Regular expressions** — `xsl:analyze-string` and the `matches`/`replace`/
-  `tokenize` functions in 2.0+ replace the `translate`-based string tricks of 1.0.
-
-For the lay of the land and the full page list, return to the
-[Overview](index.md).
+Beyond that, the language itself moved on. The next section,
+[Moving to XSLT 2.0 and 3.0](moving-to-3.md), picks up where 1.0 leaves off —
+sequences and types, real functions, native grouping, and regular expressions
+that retire most of the 1.0 workarounds you have just learned.

@@ -45,6 +45,7 @@ nav = [
       { "Grouping" = "xslt/grouping.md" },
       { "Regular expressions and strings" = "xslt/regex.md" },
       { "Modern identity and text" = "xslt/modern-identity.md" },
+      { "Reading and writing JSON" = "xslt/json.md" },
     ] },
   ] },
   { "XPath" = [

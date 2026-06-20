@@ -195,15 +195,21 @@ only the title text changes:
     "copy everything" plus inline "rewrite this bit of text" is a remarkably
     small amount of stylesheet for a precise edit.
 
-## Where next
+## Next
 
-That is the end of the tutorial. You started with the smallest complete 1.0
-stylesheet and worked through templates, modes, variables, predicates, string
-and number handling, whitespace control, reuse, and external documents — then
-finished with the 2.0/3.0 conveniences on this page. You now have a working
-picture of XSLT from its 1.0 fundamentals through its modern form.
+[Reading and writing JSON](json.md) — the most far-reaching 3.0 addition: parse
+JSON into native maps and arrays, navigate it with the `?` operator, and
+serialise structured data straight back out as JSON.
 
-XSLT 3.0 has much more to explore once you need it:
+## More to explore
+
+You started with the smallest complete 1.0 stylesheet and worked through
+templates, modes, variables, predicates, string and number handling, whitespace
+control, reuse, and external documents — then the 2.0/3.0 conveniences and JSON.
+You now have a working picture of XSLT from its 1.0 fundamentals through its
+modern form.
+
+XSLT 3.0 has yet more to explore once you need it:
 
 - **Higher-order functions** — pass functions as values, with `xsl:function`,
   inline `function(...) { ... }`, and operators like `fn:filter` and `fn:fold-left`.

@@ -77,3 +77,4 @@ focus on the XSLT rather than re-learning the data each time.
 18. [Grouping](grouping.md) — `xsl:for-each-group`, `current-group()`.
 19. [Regular expressions and strings](regex.md) — `tokenize`, `replace`, `xsl:analyze-string`.
 20. [Modern identity and text](modern-identity.md) — `on-no-match="shallow-copy"`, text value templates.
+21. [Reading and writing JSON](json.md) — `parse-json`, maps & arrays, the `?` operator, `method="json"`.

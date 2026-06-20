@@ -99,6 +99,30 @@ defines the message *types*, and the service's own target namespace.
     them through a prefix bound to that same namespace. It feels circular the first
     time; it is just "name your own things, then use those names".
 
+The verbosity that makes WSDL hard to read by eye is exactly what a structural
+renderer cuts through. Running `unxml --wsdl` over the file above collapses the
+nested elements into the contract chain — *types → message → portType* — and
+renders the embedded `xs:schema` with the same [XSD](../xsd/index.md) formatting:
+
+``` text title="unxml --wsdl booking.wsdl"
+wsdl http://travel.example.org/reservation
+  ns tns = http://travel.example.org/reservation
+  types
+    schema http://travel.example.org/reservation
+      element reserve
+        flight : xsd:string
+        date : xsd:date
+  message reserveRequest
+    part body : tns:reserve
+  portType BookingPort
+    op Reserve
+      in : tns:reserveRequest
+```
+
+Read top to bottom, that is the whole service in eight lines: a `reserve` element
+(two fields), a `message` that wraps it, and a `portType` operation that takes it
+as input. The XML said the same thing in forty lines across four namespaces.
+
 ## Two SOAP namespaces in the wild
 
 There are two SOAP envelope namespaces you will meet, and the version is encoded

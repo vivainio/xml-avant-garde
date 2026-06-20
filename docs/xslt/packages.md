@@ -11,6 +11,14 @@ module system on top: the **package**, a separately-compiled unit with an
 explicit public surface. It is to `xsl:import` what a library with a header file
 is to `#include`-ing source.
 
+!!! info "Saxon edition"
+    Package support — `xsl:package` and separately-compiled package libraries —
+    is a Saxon **EE** feature in the
+    [Saxon 12 feature matrix](https://www.saxonica.com/html/products/feature-matrix-12.html).
+    The free Saxon-HE does **not** implement packages, so on HE you stay with
+    [`xsl:import`/`xsl:include`](reuse.md). Everything below assumes a licensed
+    edition.
+
 ## A package and its consumer
 
 A package replaces `xsl:stylesheet` with `xsl:package`, names itself, and

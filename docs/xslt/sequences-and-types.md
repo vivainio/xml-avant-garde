@@ -71,6 +71,16 @@ And the item type controls *what*:
 So `element(cd)+` is "one or more `cd` elements" and `item()*` is "any sequence
 at all" — the implicit default when you omit `as=`.
 
+!!! info "Types in HE vs schema-awareness (EE)"
+    Everything above works in the free **Saxon-HE**: the built-in atomic types
+    (`xs:integer`, `xs:date`, …), occurrence indicators, and element-name tests
+    like `element(cd)`. What needs **Saxon-EE** is *schema-awareness* —
+    validating input against an [XSD](../xsd/index.md) so elements carry their
+    schema-defined types, plus the schema-aware tests `schema-element(cd)` /
+    `schema-attribute(...)`. In HE, `cd/price` atomizes to an *untyped* value
+    (effectively a string), which is exactly why the examples cast explicitly
+    with `xs:decimal(...)` rather than relying on a schema.
+
 !!! tip "Declare types — the errors move earlier"
     `as=` is optional, but adding it turns a class of silent
     wrong-answer bugs into **compile-time errors**. Declare a function returns

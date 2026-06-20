@@ -9,6 +9,22 @@ fragments, no user functions, no regex) simply disappear.
 This page is a map of what is new and why it matters. The pages that follow go
 into each topic in depth.
 
+!!! warning "Some of these features need a *paid* Saxon edition"
+    Most of this section runs in the free, open-source **Saxon-HE** — including
+    higher-order functions, [maps and arrays](maps-and-arrays.md),
+    [JSON](json.md), [error handling](error-handling.md), accumulators, and
+    `xsl:iterate`. But three features require a **licensed (commercial) Saxon
+    edition** and will *not* run on Saxon-HE:
+
+    - **[Streaming](streaming.md)** — Saxon-**EE** only.
+    - **[Packages](packages.md)** (`xsl:package` / `xsl:use-package`) — Saxon-**EE** only.
+    - **Schema-aware processing** — validating against an [XSD](../xsd/index.md)
+      so data carries typed values, and the `schema-element()` tests — Saxon-**EE**
+      only. The plain `as=` [type syntax](sequences-and-types.md) itself works in HE.
+
+    Each affected page repeats this at the top. Source: the
+    [Saxon 12 feature matrix](https://www.saxonica.com/html/products/feature-matrix-12.html).
+
 ## Declaring the version
 
 You switch versions with one attribute on the stylesheet element:

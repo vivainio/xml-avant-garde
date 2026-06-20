@@ -8,8 +8,8 @@ Hands-on, example-driven tutorials for the XML family of technologies. Every
 concept is introduced with a small, complete, runnable example — no walls of
 prose before you see real code.
 
-The site covers **XSLT**, **XPath**, and **XSD**, and will grow to cover more of
-the stack (Schematron and friends) over time.
+The site covers the core of the XML processing stack: **XSLT**, **XPath**,
+**XSD**, and **Schematron**.
 
 [Start the XSLT tutorial :material-arrow-right:](xslt/index.md){ .md-button .md-button--primary }
 
@@ -44,8 +44,13 @@ the stack (Schematron and friends) over time.
 
     [:octicons-arrow-right-24: Open](xsd/index.md)
 
+-   :material-clipboard-check-outline:{ .lg .middle } **Schematron**
+
+    ---
+
+    Rule-based validation beyond grammar — business rules, cross-field checks,
+    and calculations. Walked through the public EN16931 e-invoicing rules.
+
+    [:octicons-arrow-right-24: Open](schematron/index.md)
+
 </div>
-
-## More sections coming
-
-- **Schematron** — rule-based assertions over XML

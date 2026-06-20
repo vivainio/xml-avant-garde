@@ -61,6 +61,13 @@ nav = [
     { "Simple types and restrictions" = "xsd/simple-types-restrictions.md" },
     { "Modular schemas" = "xsd/modular-schemas.md" },
   ] },
+  { "Schematron" = [
+    { "Overview" = "schematron/index.md" },
+    { "Rules and assertions" = "schematron/rules-and-assertions.md" },
+    { "Context and tests" = "schematron/context-and-tests.md" },
+    { "Variables and messages" = "schematron/variables-and-messages.md" },
+    { "Abstract patterns and EN16931" = "schematron/abstract-patterns-en16931.md" },
+  ] },
 ]
 
 extra_css = ["stylesheets/extra.css"]

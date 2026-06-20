@@ -77,13 +77,24 @@ select="title"/>`. Delete that line and the `title` template never runs — its
 red `<span>` simply never appears in the output, even though the rule is still
 sitting there.
 
+!!! info "\"Children\" means children in the **source document**"
+    `xsl:apply-templates` always works on the document being transformed,
+    relative to the **current node** — never on the layout of the stylesheet.
+    The templates sit side by side as top-level rules; none is nested inside
+    another. When the `cd` template runs, the current node is a `<cd>` element
+    *in the source XML*, and its children are the source elements `<title>`,
+    `<artist>`, `<price>` (plus the whitespace text between them). The push model
+    walks the **data** tree; `match` patterns decide which **rule** catches each
+    node. The physical nesting of templates in the `.xsl` file is irrelevant.
+
 Two things follow from this that often trip people up:
 
 - **It is not the `select="title"` that matters — it is the reach.** A bare
   `<xsl:apply-templates/>` in the `cd` template would *also* fire the `title`
-  template, because the bare form processes *all* children and `title` is one of
-  them (so would `artist`, plus the built-in rule for any text). `select="title"`
-  just narrows *which* children get processed; it does not "call" the template by
+  template, because the bare form processes every child of the current `<cd>`
+  *source* element, and the `<title>` element is one of them (so is `<artist>`,
+  plus the built-in rule for the text nodes). `select="title"` just narrows
+  *which* of those children get processed; it does not "call" the template by
   name.
 
 - **The chain has to actually arrive at the node.** Processing flows root →

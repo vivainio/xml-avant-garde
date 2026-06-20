@@ -93,5 +93,5 @@ That last `node exists` idiom is the usual way to guard optional content:
 
 ## Next
 
-Tests let you change *what* you output. [Sorting](sorting.md) lets you change
-the *order*.
+Tests let you change *what* you output. [XPath predicates](predicates.md) push
+that filtering into the node selection itself.

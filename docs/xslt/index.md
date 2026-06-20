@@ -56,6 +56,11 @@ focus on the XSLT rather than re-learning the data each time.
 
 1. [Your first transformation](first-transformation.md) — the smallest complete stylesheet.
 2. [Templates](templates.md) — splitting rules per element with `apply-templates`.
-3. [Loops and output](loops-and-output.md) — `for-each` and `value-of`.
-4. [Conditionals](conditionals.md) — `if`, and `choose`/`when`/`otherwise`.
-5. [Sorting](sorting.md) — ordering output with `xsl:sort`.
+3. [Named templates and parameters](named-templates.md) — reusable routines you call by name.
+4. [Variables](variables.md) — binding values and node-sets with `xsl:variable`.
+5. [Loops and output](loops-and-output.md) — `for-each` and `value-of`.
+6. [Conditionals](conditionals.md) — `if`, and `choose`/`when`/`otherwise`.
+7. [XPath predicates](predicates.md) — filtering node selections with `[…]`.
+8. [String functions](strings.md) — `concat`, `substring`, `translate`, `normalize-space`, …
+9. [Producing XML output](output.md) — `xsl:output`, namespaces, `xsl:copy`, the identity transform.
+10. [Sorting](sorting.md) — ordering output with `xsl:sort`.

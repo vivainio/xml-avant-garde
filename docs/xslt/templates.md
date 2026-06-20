@@ -167,5 +167,6 @@ You now have two ways to walk a document:
 | `xsl:for-each` | You, explicitly | The structure is simple and regular |
 | `xsl:apply-templates` | The processor, by matching | Content is mixed, recursive, or reused |
 
-The next page looks at [loops and output](loops-and-output.md) — `for-each` and
-`value-of` — in more detail.
+Match templates handle "for every node of this kind." When you instead need a
+reusable routine you can call by name and pass arguments to, you want
+[named templates and parameters](named-templates.md).

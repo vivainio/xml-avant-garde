@@ -26,8 +26,13 @@ nav = [
     { "Overview" = "xslt/index.md" },
     { "Your first transformation" = "xslt/first-transformation.md" },
     { "Templates" = "xslt/templates.md" },
+    { "Named templates and parameters" = "xslt/named-templates.md" },
+    { "Variables" = "xslt/variables.md" },
     { "Loops and output" = "xslt/loops-and-output.md" },
     { "Conditionals" = "xslt/conditionals.md" },
+    { "XPath predicates" = "xslt/predicates.md" },
+    { "String functions" = "xslt/strings.md" },
+    { "Producing XML output" = "xslt/output.md" },
     { "Sorting" = "xslt/sorting.md" },
   ] },
 ]

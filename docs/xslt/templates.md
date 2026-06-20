@@ -61,6 +61,42 @@ whatever `select` names). For each node, the processor picks the **best-matching
 template by its `match` pattern. The patterns above (`cd`, `title`, `artist`)
 are XPath expressions evaluated relative to the current node.
 
+## A template only fires when it is reached
+
+This is the single most common gap for newcomers, so it is worth stating
+plainly:
+
+!!! warning "Defining a template does **not** run it"
+    A `xsl:template` is a *dormant rule*. It produces output **only when some
+    `xsl:apply-templates` reaches a node it matches** — never just because it
+    exists in the stylesheet.
+
+In the example above, the `title` template fires for one reason only: the `cd`
+template explicitly pushes the node to it with `<xsl:apply-templates
+select="title"/>`. Delete that line and the `title` template never runs — its
+red `<span>` simply never appears in the output, even though the rule is still
+sitting there.
+
+Two things follow from this that often trip people up:
+
+- **It is not the `select="title"` that matters — it is the reach.** A bare
+  `<xsl:apply-templates/>` in the `cd` template would *also* fire the `title`
+  template, because the bare form processes *all* children and `title` is one of
+  them (so would `artist`, plus the built-in rule for any text). `select="title"`
+  just narrows *which* children get processed; it does not "call" the template by
+  name.
+
+- **The chain has to actually arrive at the node.** Processing flows root →
+  `apply-templates` → `cd` → `apply-templates` → `title`. Break the chain at any
+  link above and the `title` template becomes unreachable, no matter how well its
+  `match` pattern fits.
+
+This is the difference between **pull** and **push**. The single big template on
+the [first page](first-transformation.md) *pulls*: `<xsl:value-of
+select="title"/>` goes and fetches the text where it is written. Here the `cd`
+template *pushes*: `apply-templates` hands the `title` node to whichever rule
+matches it. No push, no match — no output.
+
 ## The built-in templates
 
 You never wrote a template for the text *inside* `title`, yet the text appeared.

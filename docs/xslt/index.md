@@ -71,11 +71,9 @@ focus on the XSLT rather than re-learning the data each time.
 15. [External documents](external-documents.md) — lookups with `document()`.
 16. [Keys and indexed lookup](keys.md) — `xsl:key` and `key()`, the scalable join.
 
-### XSLT 2.0 & 3.0
-
-17. [Moving to XSLT 2.0 and 3.0](moving-to-3.md) — sequences, the `as=` type system, what changed.
-18. [User-defined functions](functions.md) — `xsl:function`, callable from any XPath.
-19. [Grouping](grouping.md) — `xsl:for-each-group`, `current-group()`.
-20. [Regular expressions and strings](regex.md) — `tokenize`, `replace`, `xsl:analyze-string`.
-21. [Modern identity and text](modern-identity.md) — `on-no-match="shallow-copy"`, text value templates.
-22. [Reading and writing JSON](json.md) — `parse-json`, maps & arrays, the `?` operator, `method="json"`.
+Those sixteen pages are **XSLT 1.0** — they run in any processor and any
+browser. When you are comfortable with them, the
+[**Modern XSLT (2.0 & 3.0)**](moving-to-3.md) section picks up where they leave
+off: sequences and a real type system, `xsl:function`, grouping, regular
+expressions, JSON, streaming, packages, and the rest of what a current processor
+like Saxon adds. Start at [Moving to XSLT 2.0 and 3.0](moving-to-3.md).

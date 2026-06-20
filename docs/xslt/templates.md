@@ -108,6 +108,37 @@ select="title"/>` goes and fetches the text where it is written. Here the `cd`
 template *pushes*: `apply-templates` hands the `title` node to whichever rule
 matches it. No push, no match — no output.
 
+## What the two select calls actually control
+
+Splitting the work into two sequential instructions —
+
+``` xml
+<xsl:apply-templates select="title"/>
+<xsl:apply-templates select="artist"/>
+```
+
+— does two distinct things, and it is worth separating them.
+
+**Order.** The result order follows the order of the *instructions*, not the
+source document. You get title-then-artist because that is the order the two
+lines are written, even if the source had `<artist>` first. A bare
+`<xsl:apply-templates/>`, by contrast, processes children in **document order**,
+so the output would mirror the source. (Within a *single* `select`, order is
+always document order — sequencing separate instructions is what lets you
+override it, short of [`xsl:sort`](sorting.md).)
+
+**Filtering.** `<cd>` also has a `<price>` child. With explicit
+`select="title"` / `select="artist"`, the `<price>` node is never reached, so it
+is omitted. A bare `<xsl:apply-templates/>` *would* reach it, and since there is
+no `price` template, the built-in rule would dump its text (`10.90`) into the
+output.
+
+!!! note "In this example, the filtering matters more than the order"
+    The source `catalog.xml` already lists `<title>` before `<artist>`, so a
+    bare `apply-templates` would produce the same order here. The explicit
+    selects earn their keep by *excluding* `<price>` — and by guaranteeing the
+    order regardless of how the source happens to be arranged.
+
 ## The built-in templates
 
 You never wrote a template for the text *inside* `title`, yet the text appeared.

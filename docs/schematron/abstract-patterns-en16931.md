@@ -205,6 +205,6 @@ the shared rulebook on top.
     bindings, the code lists, and the phases that select what runs.
 
 Return to the section [Overview](index.md) or the site [home](../index.md).
-Natural topics beyond the current scope include **XQuery** (querying instead of
-transforming), **JSON/XML** interchange, and **XSLT streaming** for documents
+Natural next topics include [**XQuery**](../xquery/index.md) (querying instead
+of transforming), **JSON/XML** interchange, and **XSLT streaming** for documents
 too large to hold in memory.

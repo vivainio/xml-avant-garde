@@ -22,7 +22,7 @@ host most readers meet first. But the same language is the addressing layer in
 many other places:
 
 - **XSLT** — `select` (what to pull) and `match` (which template fires).
-- **XQuery** — XPath is its navigation core, wrapped in a fuller query language.
+- [**XQuery**](../xquery/index.md) — XPath is its navigation core, wrapped in a fuller query language.
 - **XML Schema** — `xs:selector` and `xs:field` in identity constraints
   (`xs:key`, `xs:unique`).
 - **Schematron** — assertion rules are XPath expressions over the document.

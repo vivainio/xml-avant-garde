@@ -56,6 +56,13 @@ nav = [
     { "Node tests and predicates" = "xpath/node-tests-predicates.md" },
     { "Functions and data types" = "xpath/functions-and-types.md" },
   ] },
+  { "XQuery" = [
+    { "Overview" = "xquery/index.md" },
+    { "FLWOR expressions" = "xquery/flwor.md" },
+    { "XQuery vs XSLT" = "xquery/xquery-vs-xslt.md" },
+    { "Combining XSLT and XQuery" = "xquery/combining-xslt-xquery.md" },
+    { "XQuery in the real world" = "xquery/real-world.md" },
+  ] },
   { "XSD" = [
     { "Overview" = "xsd/index.md" },
     { "Elements and types" = "xsd/elements-and-types.md" },

@@ -115,6 +115,27 @@ Country
     document. This is the standard 1.0 idiom for keyed lookups into a loaded file:
     capture the value, switch context, call `key()`.
 
+### Why the context switch is needed
+
+The surprising part is that nothing connects the `xsl:key` declaration to
+`codes.xml` directly. The link runs through the **context node**, in three steps:
+
+1.  **`xsl:key` is a rule, not an index.** `<xsl:key match="code" use="@id"/>`
+    does not index anything on its own. It is a standing instruction: *in any
+    document the stylesheet touches, index its `code` elements by `@id`*.
+2.  **Each document gets its own index.** The processor applies that rule
+    separately to every document it parses. The source catalog has no `code`
+    elements, so *its* `code-by-id` index is empty; `codes.xml` has them, so
+    *its* index is full. Same key name, two independent indexes.
+3.  **`key()` reads the index of the context node's document.** `key()` takes no
+    document argument — it consults *the current document*, meaning the one that
+    owns the context node at that moment.
+
+So `document('codes.xml')` is what gets that file parsed and indexed;
+`for-each select="$codes"` is what moves the context node *into* it; and only then
+does `key('code-by-id', …)` read the right index. Drop the context switch and
+`key()` would query the source catalog's empty index and return nothing.
+
 ## Keys for grouping (Muenchian)
 
 Before `xsl:for-each-group` (2.0), keys were also the engine of **grouping**. The

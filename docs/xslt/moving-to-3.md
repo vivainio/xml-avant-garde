@@ -185,12 +185,17 @@ A quick map of the bigger features, each covered on its own page:
 | Sequences & types | The `as=` type system that underpins everything below | [sequences and types](sequences-and-types.md) |
 | User-defined functions | Write your own XPath functions with `xsl:function` | [functions](functions.md) |
 | Higher-order functions | Functions as values: `fold-left`, `filter`, `=>` | [higher-order functions](higher-order-functions.md) |
+| New functions | The 2.0/3.0/3.1 library additions, as a reference | [new functions](new-functions.md) |
 | Maps & arrays | Dictionaries and nested lists, the 3.1 data structures | [maps and arrays](maps-and-arrays.md) |
 | Reading & writing JSON | `parse-json`, maps & arrays, `method="json"` | [JSON](json.md) |
 | Grouping | `xsl:for-each-group` replaces the 1.0 "Muenchian" trick | [grouping](grouping.md) |
 | Regex & strings | `matches`, `replace`, `tokenize`, `xsl:analyze-string` | [regex](regex.md) |
+| Non-XML text I/O | `unparsed-text`, `parse-xml`, `serialize`, CSV ⇄ XML | [text and parsing](text-and-parsing.md) |
 | Dates & times | Real date types, arithmetic, and `format-date` | [dates and times](dates-and-times.md) |
+| Tunnel parameters | Pass values through a template chain invisibly | [tunnel parameters](tunnel-parameters.md) |
+| Conditional output | `xsl:where-populated`, `xsl:on-empty`/`on-non-empty` | [conditional output](conditional-output.md) |
 | Modern identity & text | Declarative `xsl:mode` identity and text value templates | [modern identity and text](modern-identity.md) |
+| Dynamic XPath | `xsl:evaluate` runs an XPath supplied at run time | [dynamic XPath](dynamic-xpath.md) |
 | Multiple outputs | `xsl:result-document` writes many files in one run | [result documents](result-documents.md) |
 | Error handling | `xsl:try`/`xsl:catch`, `xsl:assert` | [error handling](error-handling.md) |
 | Streaming | Process documents too large to fit in memory | [streaming](streaming.md) |

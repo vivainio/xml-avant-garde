@@ -161,6 +161,43 @@ certificate, and receivers reject anything not chaining back to the Peppol root.
 This is how a receiver can trust a document from a sender it has never met — the
 trust is in the network's PKI, not in the bilateral relationship.
 
+## Is there a central Peppol server?
+
+Almost none — and this is the most common misconception. Invoices do **not** pass
+through any Peppol-operated hub. Delivery is strictly peer-to-peer: the sending
+Access Point opens an **AS4** connection *directly* to the receiving Access Point.
+There is no central relay, message broker, or store-and-forward server, and
+OpenPeppol never sees the traffic or the documents.
+
+Only two things are genuinely central, and neither is in the message path:
+
+- **The SML** — a **DNS zone** managed centrally on OpenPeppol's behalf. You do not
+  "call" it like an API; you do an ordinary DNS lookup that resolves to the right
+  SMP. Central as *who controls the root*, distributed as *how it is queried*.
+- **The PKI root** — OpenPeppol operates the root certificate authority every
+  Access Point and SMP certificate chains back to. A central *trust anchor*, but
+  certificates are validated locally, not by calling home.
+
+Everything else is **federated**: many independent SMPs (each holding only its own
+participants' metadata) and many independent Access Points (any conformant one talks
+to any other). What makes it interoperate is not a server but a shared set of
+**interchange specifications** — the *Peppol eDelivery Network* specs, layered on
+open OASIS/CEF standards rather than invented from scratch:
+
+| Concern | Peppol spec | Built on |
+| --- | --- | --- |
+| Transport between APs | Peppol AS4 profile | OASIS **ebMS3 / AS4** (CEF eDelivery) |
+| Recipient metadata | Peppol SMP spec | OASIS **BDXR SMP** |
+| Locator / discovery | Peppol SML spec | OASIS **BDXL** + DNS |
+| Trust | Peppol certificate policy | X.509 PKI |
+
+!!! note "Federated like email, with a shared phone book"
+    The right mental model: Peppol is a set of interchange specs plus a central
+    DNS directory and a central trust root — **not** a central server that messages
+    flow through. Mail servers deliver to each other directly using shared protocols
+    and DNS; Peppol works the same way, with an added PKI that makes the network
+    closed and trusted.
+
 ## Who runs it: OpenPeppol and the Authorities
 
 **OpenPeppol** is the international non-profit (AISBL, based in Belgium) that owns

@@ -80,6 +80,22 @@ nav = [
     { "The Peppol network" = "einvoicing/peppol-network.md" },
     { "Glossary" = "einvoicing/glossary.md" },
   ] },
+  { "Real-world XML applications" = [
+    { "Overview" = "realworld/index.md" },
+    { "SVG" = "realworld/svg.md" },
+    { "SOAP and WSDL" = "realworld/soap-wsdl.md" },
+    { "Office: OOXML and ODF" = "realworld/office-ooxml-odf.md" },
+    { "Atom and feed extensions" = "realworld/atom-feeds.md" },
+    { "XSL-FO and Apache FOP" = "realworld/xsl-fo-fop.md" },
+    { "XML Signature" = "realworld/xml-dsig.md" },
+    { "GPX and KML" = "realworld/geo-gpx-kml.md" },
+    { "XBRL" = "realworld/xbrl.md" },
+    { "Working with XML in code" = "realworld/xml-in-code.md" },
+    { "APIs: Java (JAXP & Saxon)" = "realworld/api-java.md" },
+    { "APIs: .NET" = "realworld/api-dotnet.md" },
+    { "APIs: Python (lxml)" = "realworld/api-python.md" },
+    { "APIs: Rust" = "realworld/api-rust.md" },
+  ] },
 ]
 
 extra_css = ["stylesheets/extra.css"]

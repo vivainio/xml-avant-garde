@@ -196,6 +196,177 @@ pointing one level down:
 The result is a clean separation: change a basic field's type once in `cbc`/`udt`
 and every aggregate and document that composes it follows automatically.
 
+## Tracing one leaf down to its base type
+
+The diagram stops at `udt`, but the real interest is *how* a leaf value reaches
+it. Earlier you saw aggregates composing **by reference** — `cac:Party` points at
+`cac:PartyName` points at `cbc:Name`. The data types work the other way: they
+compose **by derivation**, each type pointing at a `base` one level more generic.
+This is the one place UBL genuinely uses a derivation hierarchy.
+
+Take the amount from the running example, `cbc:LineExtensionAmount`. Its type is
+not `xsd:decimal` directly — it sits on a four-level chain, each level in a
+different schema module.
+
+The **`cbc` element type** names the business term and adds nothing of its own:
+
+``` xml title="UBL-CommonBasicComponents-2.1.xsd (excerpt)" linenums="1"
+<xsd:element name="LineExtensionAmount" type="LineExtensionAmountType"/>
+
+<xsd:complexType name="LineExtensionAmountType">
+  <xsd:simpleContent>
+    <xsd:extension base="udt:AmountType"/>   <!-- (1)! -->
+  </xsd:simpleContent>
+</xsd:complexType>
+```
+
+1.  Pure naming: every cbc business term gets its own named type that extends a
+    shared `udt` type but adds no content. That is why `LineExtensionAmount` and
+    `TaxAmount` are *distinct* types yet behave identically — both are just
+    `udt:AmountType` under a different name.
+
+The **`udt` type** profiles that generic data type for UBL. Here it does so by
+*restriction*, forcing `currencyID` to be present and dropping the looser
+attribute:
+
+``` xml title="UBL-UnqualifiedDataTypes-2.1.xsd (excerpt)" linenums="1"
+<xsd:complexType name="AmountType">
+  <xsd:simpleContent>
+    <xsd:restriction base="ccts-cct:AmountType">   <!-- (1)! -->
+      <xsd:attribute name="currencyID"
+                     type="xsd:normalizedString"
+                     use="required"/>               <!-- (2)! -->
+    </xsd:restriction>
+  </xsd:simpleContent>
+</xsd:complexType>
+```
+
+1.  `restriction`, not `extension`: the `udt` layer *tightens* the core type
+    rather than adding to it.
+2.  The core type left `currencyID` optional; UBL makes it **required**. The
+    other core attribute (`currencyCodeListVersionID`) is simply not repeated, so
+    the restriction drops it.
+
+The **CCT type** is the generic, reusable core component — a decimal body plus
+every *supplementary component* the standard allows, all optional:
+
+``` xml title="CCTS_CCT_SchemaModule-2.1.xsd (excerpt)" linenums="1"
+<xsd:complexType name="AmountType">
+  <xsd:simpleContent>
+    <xsd:extension base="xsd:decimal">             <!-- (1)! -->
+      <xsd:attribute name="currencyID"
+                     type="xsd:normalizedString" use="optional"/>
+      <xsd:attribute name="currencyCodeListVersionID"
+                     type="xsd:normalizedString" use="optional"/>
+    </xsd:extension>
+  </xsd:simpleContent>
+</xsd:complexType>
+```
+
+1.  **Here is the real base type.** Everything above bottoms out in
+    `xsd:decimal`. This module — the UN/CEFACT Core Component Types, namespace
+    `urn:un:unece:uncefact:data:specification:CoreComponentTypeSchemaModule:2` —
+    is shared far beyond UBL, and is where the `simpleContent` pattern from
+    [Complex types](complex-types.md#simplecontent-a-value-plus-an-attribute)
+    actually lives.
+
+Read bottom to top, the full chain is:
+
+```
+cbc:LineExtensionAmountType    names the business term
+   └─ udt:AmountType           UBL profile: currencyID required
+        └─ ccts-cct:AmountType core type: decimal + optional supplementary components
+             └─ xsd:decimal    the primitive base
+```
+
+!!! note "The `simpleContent` example earlier was the flattened version"
+    [Complex types](complex-types.md) built an `AmountType` that extends
+    `xsd:decimal` directly. That is this same shape *collapsed into one step*.
+    Real UBL spreads it over three named types in three modules so the core type
+    can be shared and the UBL profile can tighten it independently.
+
+## Why some `udt` types restrict and others just extend
+
+Not every `udt` type tightens its core type. The identifier chain *extends* with
+no additions, so it inherits the full set of optional attributes unchanged:
+
+``` xml title="udt:IdentifierType — pass-through extension" linenums="1"
+<xsd:complexType name="IdentifierType">
+  <xsd:simpleContent>
+    <xsd:extension base="ccts-cct:IdentifierType"/>   <!-- (1)! -->
+  </xsd:simpleContent>
+</xsd:complexType>
+```
+
+1.  Nothing added or removed. `cbc:IDType` then extends *this*, so a `cbc:ID` may
+    carry any of the seven `scheme*` attributes the core type defines.
+
+Those attributes come from the CCT type — note it rests on `xsd:normalizedString`,
+not a numeric base:
+
+``` xml title="ccts-cct:IdentifierType (excerpt)" linenums="1"
+<xsd:complexType name="IdentifierType">
+  <xsd:simpleContent>
+    <xsd:extension base="xsd:normalizedString">
+      <xsd:attribute name="schemeID"         type="xsd:normalizedString" use="optional"/>
+      <xsd:attribute name="schemeName"       type="xsd:string"           use="optional"/>
+      <xsd:attribute name="schemeAgencyID"   type="xsd:normalizedString" use="optional"/>
+      <xsd:attribute name="schemeAgencyName" type="xsd:string"           use="optional"/>
+      <xsd:attribute name="schemeVersionID"  type="xsd:normalizedString" use="optional"/>
+      <xsd:attribute name="schemeDataURI"    type="xsd:anyURI"           use="optional"/>
+      <xsd:attribute name="schemeURI"        type="xsd:anyURI"           use="optional"/>
+    </xsd:extension>
+  </xsd:simpleContent>
+</xsd:complexType>
+```
+
+The rule of thumb:
+
+- **Restriction** when a value is meaningless without a qualifier — an amount
+  needs a currency, a measure needs a unit. The `udt` layer makes that attribute
+  `use="required"` and prunes the rest.
+- **Extension with no change** when the qualifiers are genuinely optional — an
+  identifier or code *may* name its scheme, but a bare value is still valid.
+
+## The unqualified data types worth knowing
+
+UBL defines a small, fixed set of `udt` types; every `cbc` leaf resolves to one
+of them. The ones you meet most often:
+
+| `udt` type | Base | Carries | Notable rule |
+| --- | --- | --- | --- |
+| `AmountType` | `xsd:decimal` | `currencyID` | currency **required** |
+| `QuantityType` | `xsd:decimal` | `unitCode`, `unitCodeListID`, … | unit optional (pass-through) |
+| `MeasureType` | `xsd:decimal` | `unitCode` | unit **required** |
+| `NumericType` | `xsd:decimal` | — | plain number (cf. `PercentType`, `RateType`) |
+| `IdentifierType` | `xsd:normalizedString` | seven × `scheme*` | *which* identifier scheme |
+| `CodeType` | `xsd:normalizedString` | nine × `list*` | *which* code list |
+| `TextType` | `xsd:string` | `languageID`, `languageLocaleID` | human-readable text |
+| `NameType` | a `TextType` | `languageID`, … | a name *is* text with a language |
+| `DateType` / `TimeType` | `xsd:date` / `xsd:time` | — | extend the primitive directly, no CCT |
+| `IndicatorType` | `xsd:boolean` | — | true/false flag |
+| `BinaryObjectType` | `xsd:base64Binary` | `mimeCode` (**required**), `filename`, `encodingCode`, … | embedded attachments |
+
+A few worth pulling out:
+
+- **`CodeType` is the richest.** Its nine `list*` attributes (`listID`,
+  `listAgencyID`, `listVersionID`, `listURI`, `languageID`, …) say *which* code
+  list a value belongs to — the schema-level companion to the Genericode
+  mechanism in [Code lists](../einvoicing/genericode-codelists.md).
+- **`NameType` has no core of its own** — it extends the CCT `TextType`. In UBL a
+  *name* is literally *text that may declare a language*, nothing more.
+- **`DateType`, `TimeType`, and `IndicatorType` skip the CCT layer**, extending
+  `xsd:date` / `xsd:time` / `xsd:boolean` directly. The core-component module
+  only defines a combined `DateTimeType`, so UBL builds the split-out date and
+  time straight on the primitives.
+
+!!! tip "How to read any `cbc` leaf"
+    Hit an unfamiliar `cbc:` element? Find its type in the cbc schema, follow its
+    `udt` base, and you immediately know two things: its **value space** (decimal?
+    normalizedString? boolean?) and the **attributes** it may carry (a currency? a
+    scheme? a language?). Every leaf in a UBL document resolves through exactly
+    this `cbc → udt → CCT → primitive` path.
+
 ## `substitutionGroup` (brief)
 
 XSD also lets a global element declare itself a substitute for another via

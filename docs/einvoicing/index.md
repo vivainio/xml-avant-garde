@@ -16,6 +16,11 @@ the canonical modern XML application: a public semantic standard, two XML syntax
 a layered validation stack, and shared code lists — exactly the four technologies
 this site covers, assembled into one pipeline.
 
+!!! tip "Drowning in acronyms?"
+    EN16931, UBL, CIUS, Peppol BIS… this domain is dense with them. The
+    [Glossary](glossary.md) defines every term on these pages in plain language —
+    keep it open in a tab.
+
 ## The cast
 
 | Thing | What it is | Built on |

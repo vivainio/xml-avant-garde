@@ -76,6 +76,7 @@ nav = [
     { "The validation pipeline" = "einvoicing/validation-pipeline.md" },
     { "Genericode code lists" = "einvoicing/genericode-codelists.md" },
     { "Peppol and CIUS profiles" = "einvoicing/peppol-cius.md" },
+    { "Glossary" = "einvoicing/glossary.md" },
   ] },
 ]
 

@@ -70,6 +70,40 @@ EN16931 validation ships a folder of these. The common ones:
 | Payment means | `cbc:PaymentMeansCode` | UNCL4461 |
 | Unit of measure | `@unitCode` on quantities | UN/ECE Rec 20 |
 
+## Are code lists shared across formats?
+
+Yes — and at several levels, because a code list attaches to the **business term**,
+not to the element that carries it. It lives *above* the syntax layer.
+
+**Across the two EN16931 syntaxes.** BT-5 (currency) must be an ISO 4217 code
+whether the document writes it as UBL's `cbc:DocumentCurrencyCode` or CII's
+`ram:InvoiceCurrencyCode`. The allowed-value set is identical; only the element
+differs. So the *same* `.gc` files back both bindings — there are two separate
+mappings, and only the first is syntax-specific:
+
+| Mapping | Goes from | To | Per-syntax? |
+| --- | --- | --- | --- |
+| Syntax binding | business term | an *element* | yes (`cbc:…` vs `ram:…`) |
+| Code-list binding | business term | a *list* | no — shared |
+
+**Across document types.** Within UBL, an Invoice, a CreditNote and an Order all
+draw currency from the same ISO 4217 list. The list does not know which document
+references it.
+
+**Across unrelated standards.** The base lists *are* external global standards —
+ISO 4217, ISO 3166, the UNCL lists, UN/ECE Rec 20 — reused far beyond invoicing.
+EN16931 does not own them; it *references* them. Genericode is a format-neutral
+table keyed by code, so any consumer can load the same file, and the
+[lookup below](#looking-a-code-up) is identical regardless of the document being
+validated.
+
+!!! warning "A profile narrows a shared list, it does not redefine it"
+    A [CIUS such as Peppol](peppol-cius.md) may restrict a shared list to a
+    *subset* (consistent with "narrow, never loosen"), and add its own scheme lists
+    (EAS, ICD) on top. The base list stays shared; the profile just applies a
+    tighter allowed set. So: **shared, format-neutral value sets — only the "this
+    field uses that list" binding is restated per syntax.**
+
 ## Looking a code up
 
 The job is the [codelist join](../xslt/external-documents.md) from the XSLT

@@ -48,17 +48,20 @@ flowchart TD
 
 ## The pages
 
-1. [Anatomy of a UBL invoice](ubl-invoice.md) — walk a real invoice: namespaces,
+1. [Anatomy of a UBL invoice](ubl-invoice.md) — walk a small invoice: namespaces,
    `cbc`/`cac`, and how EN16931's BT-/BG- business terms map onto the XML.
-2. [The validation pipeline](validation-pipeline.md) — XSD, then EN16931
+2. [A UBL invoice in detail](ubl-invoice-detail.md) — the full OASIS example taken
+   apart block by block, with the totals reconciled by hand.
+4. [The validation pipeline](validation-pipeline.md) — XSD, then EN16931
    Schematron, then profile and code-list checks: what each layer is for.
-3. [Genericode code lists](genericode-codelists.md) — the `.gc` format, and
+5. [Genericode code lists](genericode-codelists.md) — the `.gc` format, and
    looking codes up efficiently with [`xsl:key`](../xslt/keys.md) or a
    [`map`](../xslt/json.md).
-4. [Peppol and CIUS profiles](peppol-cius.md) — how EN16931 is specialised for
+6. [Peppol and CIUS profiles](peppol-cius.md) — how EN16931 is specialised for
    real networks, and why a profile may only *narrow*, never loosen.
 
-!!! note "Neutral, invented data"
-    Every invoice on these pages uses made-up parties and amounts. The
-    *structure*, namespaces, rule identifiers and code lists are the real ones; the
-    business data is not.
+!!! note "Neutral data, with one real exception"
+    Most invoices on these pages use made-up parties and amounts — the
+    *structure*, namespaces, rule identifiers and code lists are real, the business
+    data is not. The exception is [A UBL invoice in detail](ubl-invoice-detail.md),
+    which walks the verbatim public OASIS UBL 2.1 example.

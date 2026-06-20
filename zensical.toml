@@ -34,6 +34,11 @@ nav = [
     { "String functions" = "xslt/strings.md" },
     { "Producing XML output" = "xslt/output.md" },
     { "Sorting" = "xslt/sorting.md" },
+    { "Number formatting" = "xslt/number-formatting.md" },
+    { "Whitespace and xsl:text" = "xslt/whitespace.md" },
+    { "Template modes" = "xslt/modes.md" },
+    { "Reusing stylesheets" = "xslt/reuse.md" },
+    { "External documents" = "xslt/external-documents.md" },
   ] },
 ]
 

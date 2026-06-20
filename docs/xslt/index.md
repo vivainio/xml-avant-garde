@@ -64,3 +64,8 @@ focus on the XSLT rather than re-learning the data each time.
 8. [String functions](strings.md) — `concat`, `substring`, `translate`, `normalize-space`, …
 9. [Producing XML output](output.md) — `xsl:output`, namespaces, `xsl:copy`, the identity transform.
 10. [Sorting](sorting.md) — ordering output with `xsl:sort`.
+11. [Number formatting](number-formatting.md) — `format-number` and `xsl:decimal-format`.
+12. [Whitespace and xsl:text](whitespace.md) — controlling the spaces and newlines in your output.
+13. [Template modes](modes.md) — processing the same nodes several ways.
+14. [Reusing stylesheets](reuse.md) — `xsl:include` and `xsl:import`.
+15. [External documents](external-documents.md) — lookups with `document()`.

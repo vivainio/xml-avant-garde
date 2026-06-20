@@ -79,10 +79,8 @@ processor drive iteration:
 </xsl:apply-templates>
 ```
 
-## Where next
+## Next
 
-That covers the core of XSLT 1.0: templates, iteration, output, conditionals,
-and sorting. From here the natural directions are **named templates and
-parameters** for reuse, **keys** (`xsl:key`) for fast cross-references, and
-moving to **XSLT 2.0/3.0** for grouping, regular expressions, and richer
-functions — topics this tutorial will grow into.
+That covers the core transformation toolkit. The remaining pages collect
+techniques you reach for in larger, real-world stylesheets — starting with
+[number formatting](number-formatting.md) for money and locale-aware output.

@@ -106,11 +106,13 @@ Each layer is one of the technologies this site teaches, doing exactly what it w
 designed for. E-invoicing is not a special case — it is the everyday XML stack,
 shown at full scale.
 
-## Where next
+## Next
 
-You have now followed an invoice from its [structure](ubl-invoice.md), through the
-[validation pipeline](validation-pipeline.md) and its [code lists](genericode-codelists.md),
-to the [profile](peppol-cius.md) that makes it exchangeable. To revisit the
-technologies underneath, head back to [XSD](../xsd/index.md),
+This page covered the *document* — how Peppol shapes the invoice. The other half is
+the *network* that carries it: [The Peppol network](peppol-network.md) — the
+four-corner model, Access Points, and how a document finds its recipient and is
+delivered.
+
+To revisit the technologies underneath, head back to [XSD](../xsd/index.md),
 [Schematron](../schematron/index.md), [XPath](../xpath/index.md), or
 [XSLT](../xslt/index.md) — or the site [home](../index.md).

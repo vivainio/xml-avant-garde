@@ -59,6 +59,8 @@ flowchart TD
    [`map`](../xslt/json.md).
 6. [Peppol and CIUS profiles](peppol-cius.md) — how EN16931 is specialised for
    real networks, and why a profile may only *narrow*, never loosen.
+7. [The Peppol network](peppol-network.md) — the four-corner model, Access Points,
+   SML/SMP discovery, and AS4: how an invoice is actually delivered.
 
 !!! note "Neutral data, with one real exception"
     Most invoices on these pages use made-up parties and amounts — the

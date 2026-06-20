@@ -8,8 +8,8 @@ Hands-on, example-driven tutorials for the XML family of technologies. Every
 concept is introduced with a small, complete, runnable example — no walls of
 prose before you see real code.
 
-The site covers **XSLT** and **XPath**, and will grow to cover more of the stack
-(XSD, Schematron, and friends) over time.
+The site covers **XSLT**, **XPath**, and **XSD**, and will grow to cover more of
+the stack (Schematron and friends) over time.
 
 [Start the XSLT tutorial :material-arrow-right:](xslt/index.md){ .md-button .md-button--primary }
 
@@ -35,9 +35,17 @@ The site covers **XSLT** and **XPath**, and will grow to cover more of the stack
 
     [:octicons-arrow-right-24: Open](xpath/index.md)
 
+-   :material-file-check-outline:{ .lg .middle } **XSD**
+
+    ---
+
+    Describe and validate XML structure with XML Schema. Elements, types,
+    cardinality, facets, and modular schemas — walked through real public UBL.
+
+    [:octicons-arrow-right-24: Open](xsd/index.md)
+
 </div>
 
 ## More sections coming
 
-- **XSD** — describing and validating document structure
 - **Schematron** — rule-based assertions over XML

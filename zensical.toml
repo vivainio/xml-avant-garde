@@ -54,6 +54,13 @@ nav = [
     { "Node tests and predicates" = "xpath/node-tests-predicates.md" },
     { "Functions and data types" = "xpath/functions-and-types.md" },
   ] },
+  { "XSD" = [
+    { "Overview" = "xsd/index.md" },
+    { "Elements and types" = "xsd/elements-and-types.md" },
+    { "Complex types" = "xsd/complex-types.md" },
+    { "Simple types and restrictions" = "xsd/simple-types-restrictions.md" },
+    { "Modular schemas" = "xsd/modular-schemas.md" },
+  ] },
 ]
 
 extra_css = ["stylesheets/extra.css"]

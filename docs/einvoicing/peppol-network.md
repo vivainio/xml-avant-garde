@@ -117,9 +117,48 @@ sequenceDiagram
 
 **SML — Service Metadata Locator.** A single, central directory for the whole
 network, run by OpenPeppol and built on **DNS**. Given a participant identifier,
-C2 hashes it into a DNS name and looks it up; the SML answers with the address of
-the **SMP** that holds that participant's metadata. One global phone book, pointing
-at the right local directory.
+C2 derives a DNS name and looks it up; the answer points at the **SMP** that holds
+that participant's metadata. One global phone book, pointing at the right local
+directory.
+
+#### How DNS is actually used
+
+This is not a metaphor — the locator *is* the Domain Name System. The mechanism is
+OASIS **BDXL** (Business Document Metadata Service Location), and it works like
+this:
+
+1.  **Hash the participant ID.** Take the scheme-qualified identifier
+    (`iso6523-actorid-upis::0192:991234567`), MD5-hash it, hex-encode it, and prefix
+    `B-`:
+
+    ``` text
+    B-<md5 hex of the lowercased participant id>.iso6523-actorid-upis.edelivery.tech.ec.europa.eu
+    └──────────── host label ───────────────────┘ └ scheme ┘ └──── the SML zone ────┘
+    ```
+
+    The hash keeps the host label a fixed, DNS-legal length regardless of how odd
+    the identifier is, and avoids leaking raw IDs into cleartext zone transfers.
+
+2.  **Query DNS.** A normal resolver lookup of that name returns a record (a
+    **NAPTR** record in the full BDXL scheme, or in the simpler/legacy variant a
+    **CNAME**) that yields the **base URL of the SMP** serving that participant.
+
+3.  **Build the SMP URL and fetch.** C2 appends the (again, percent-encoded)
+    participant ID to that base URL and does a plain **HTTPS GET** — the SMP query
+    in the diagram above.
+
+``` text
+DNS:  B-a1b2c3…@iso6523-actorid-upis.edelivery…ec.europa.eu  →  smp.example.com
+HTTP: GET https://smp.example.com/iso6523-actorid-upis::0192:991234567
+```
+
+!!! note "Why route discovery through DNS at all?"
+    DNS is already a planet-scale, cached, highly-available distributed lookup with
+    no single query bottleneck. By encoding "which SMP serves participant X" as DNS
+    records, Peppol gets global resolution **for free** — the SML only has to manage
+    the *zone* (the records), while the actual lookups are answered by the ordinary
+    DNS infrastructure and its caches. That is exactly why the SML is "central" only
+    in the sense of *who owns the zone*, not *who answers each query*.
 
 **SMP — Service Metadata Publisher.** Each participant is registered with an SMP
 (typically run by their Access Point). The SMP publishes, per participant:
@@ -137,20 +176,115 @@ at the right local directory.
     lists as capabilities — the document layer and the network layer use the same
     identifiers.
 
-## Transport: AS4
+## Transport: AS4 in detail
 
-The actual transmission between Access Points uses **AS4** — a standardised,
-secure messaging protocol (the AS4 profile of OASIS ebMS3, adopted by the EU's
-*eDelivery* building block). It gives the network:
+The actual transmission between Access Points uses **AS4** — the Peppol AS4 profile,
+which builds on the CEF *eDelivery* AS4 profile, which is a conformance profile of
+OASIS **ebMS3**, which in turn rides on **SOAP 1.2**. The stack, bottom to top:
 
-- **message-level signing and encryption**, on top of TLS;
-- **reliable delivery** with signed receipts, so the sender has proof the message
-  was handed over;
-- **payload-agnostic** transport — AS4 carries the invoice as a payload and does not
-  care that it is UBL.
+```mermaid
+flowchart TD
+  H["HTTPS (TLS) — one POST"] --> M["MIME multipart/related"]
+  M --> S["SOAP 1.2 envelope"]
+  S --> E["ebMS3 messaging header + WS-Security"]
+  E --> A["AS4 profile (Peppol)"]
+```
 
-Because AS4 is an open standard, any conformant Access Point can talk to any other —
-that is what makes "connect once" work.
+### What goes on the wire
+
+One Access Point sends to another with a **single HTTP POST** whose body is a
+**MIME multipart** message — the SOAP envelope in the first part, the business
+payload as an attachment in the second:
+
+``` text
+POST /as4 HTTP/1.1
+Content-Type: multipart/related; type="application/soap+xml"; boundary="MIMEBoundary"
+
+--MIMEBoundary
+Content-Type: application/soap+xml          ← the SOAP envelope (metadata + security)
+  <soap:Envelope> … <eb:Messaging> … </soap:Envelope>
+--MIMEBoundary
+Content-Type: application/gzip               ← the payload, often GZIP-compressed
+Content-ID: <payload-1>
+  [ SBDH-wrapped UBL invoice bytes ]
+--MIMEBoundary--
+```
+
+The payload is **referenced, not inlined**: the SOAP header lists it in
+`eb:PayloadInfo/eb:PartInfo` with an `href` that matches the attachment's
+`Content-ID`.
+
+### The ebMS3 header — the routing metadata
+
+Inside the SOAP header, the `eb:Messaging/eb:UserMessage` element carries the
+addressing and collaboration metadata. This is the AS4 equivalent of an envelope's
+to/from/subject:
+
+``` xml title="simplified eb:UserMessage"
+<eb:UserMessage>
+  <eb:MessageInfo>
+    <eb:Timestamp>2026-06-20T10:00:00Z</eb:Timestamp>
+    <eb:MessageId>uuid@sender.example</eb:MessageId>          <!-- (1)! -->
+  </eb:MessageInfo>
+  <eb:PartyInfo>
+    <eb:From><eb:PartyId>…sending AP's id…</eb:PartyId>
+            <eb:Role>…initiator…</eb:Role></eb:From>
+    <eb:To>  <eb:PartyId>…receiving AP's id…</eb:PartyId>
+            <eb:Role>…responder…</eb:Role></eb:To>             <!-- (2)! -->
+  </eb:PartyInfo>
+  <eb:CollaborationInfo>
+    <eb:Service>…the Peppol process id…</eb:Service>           <!-- (3)! -->
+    <eb:Action>…the document type id…</eb:Action>
+    <eb:ConversationId>…</eb:ConversationId>
+  </eb:CollaborationInfo>
+  <eb:PayloadInfo>
+    <eb:PartInfo href="cid:payload-1">                         <!-- (4)! -->
+      <eb:PartProperties>
+        <eb:Property name="CompressionType">application/gzip</eb:Property>
+      </eb:PartProperties>
+    </eb:PartInfo>
+  </eb:PayloadInfo>
+</eb:UserMessage>
+```
+
+1.  A unique `MessageId` — used to correlate the message with its receipt.
+2.  **`From`/`To` are the Access Points** (C2/C3), not the businesses. The *business*
+    sender/receiver live one layer in, in the SBDH (below).
+3.  `Service` and `Action` carry the Peppol **process** and **document-type**
+    identifiers — the same `ProfileID` / `CustomizationID` family the SMP advertised
+    as capabilities.
+4.  Links to the payload attachment by its `Content-ID`, and declares that it was
+    GZIP-compressed (an AS4 feature).
+
+### Two envelopes: AS4 and the SBDH
+
+A subtlety worth pinning down: the business document is wrapped **twice**.
+
+| Layer | Carries | Addresses |
+| --- | --- | --- |
+| **AS4 / ebMS3 header** | transport metadata, security | the **Access Points** (C2 → C3) |
+| **SBDH** (Standard Business Document Header) | business routing | the **participants** (C1 → C4) |
+| **UBL invoice** | the actual content | — |
+
+The **SBDH** (a UN/CEFACT header) sits *inside* the AS4 payload and restates the
+sender/receiver **participant identifiers**, the document type, and the process —
+so the receiving Access Point knows which of *its* customers (C4) the document is
+for after AS4 has done its AP-to-AP job.
+
+### Security and reliability
+
+- **Signed and encrypted at the message level** with WS-Security, using the
+  [Peppol certificates](#trust-the-peppol-pki) — an **XML Signature** over the SOAP
+  body and payload, and **XML Encryption** of the payload (the CEF profile pins the
+  algorithms, e.g. RSA-SHA256 signatures, AES-GCM encryption). This is *on top of*
+  the TLS that already protects the HTTP connection.
+- **Non-repudiation receipt** — the MEP is **One-Way / Push**, and the receiving AP
+  answers *synchronously in the HTTP response* with a signed `eb:Receipt`. That
+  receipt contains the digests of what was received (`NonRepudiationInformation`),
+  so the sender holds cryptographic proof of exactly what C3 accepted.
+
+Because every AP implements this same profile, **any conformant Access Point can
+talk to any other** — which is what makes "connect once" work at the wire level.
 
 ## Trust: the Peppol PKI
 

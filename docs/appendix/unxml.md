@@ -64,6 +64,26 @@ documents are usually shown as raw XML anyway — for a short specimen the marku
 already clear. The compact form earns its keep on the schemas and stylesheets
 below, which are far denser.)
 
+### Prose with inline elements
+
+Document-style XML interleaves text with small inline elements — a `<para>` with
+a `<command>` inside it. Flattening every run onto its own line would shred the
+sentence, so `unxml` keeps such *mixed content* on one line, as verbatim XML:
+
+``` text title="a paragraph with inline spans"
+para = The <command>widget</command> daemon keeps its <filename>state.db</filename> in one place.
+```
+
+The rule is structural, not a list of known tags: an element flows inline when
+its whole subtree is *inline-safe* — text interleaved with elements that are
+themselves inline-safe. A leaf with significant multi-line text (a
+`<programlisting>` or `<screen>`) is **not** inline-safe, so its parent stays in
+the flattened block form and the listing keeps its line breaks. The principle:
+**flatten the scaffolding, quote the prose** — angle brackets vanish from the
+document skeleton but remain on the short inline spans, where the markup *is* the
+content. This is what makes the [DocBook skeleton](../realworld/docbook.md) read
+the way it does.
+
 ## `--xsd` — XML Schema
 
 A schema's job is to declare a data model, but `xs:complexType` / `xs:sequence` /

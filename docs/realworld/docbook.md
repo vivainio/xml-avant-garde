@@ -69,38 +69,20 @@ chapter(
     xmlns="http://docbook.org/ns/docbook",
     xmlns:xlink="http://www.w3.org/1999/xlink")
   title = Backups and recovery
-  para
-    "The"
-    command = widget
-    "daemon keeps its state in a single database. This chapter explains how to snapshot that state and how to restore it after a mishap."
+  para = The <command>widget</command> daemon keeps its state in a single database. This chapter explains how to snapshot that state and how to restore it after a mishap.
   section(xml:id="how-backups-work")
     title = How backups work
-    para
-      "A backup is a consistent, point-in-time copy written to the directory named by the"
-      envar = WIDGET_BACKUP_DIR
-      "environment variable. Each run produces two artefacts:"
+    para = A backup is a consistent, point-in-time copy written to the directory named by the <envar>WIDGET_BACKUP_DIR</envar> environment variable. Each run produces two artefacts:
     itemizedlist
       listitem
-        para
-          "a compressed data file,"
-          filename = snapshot.wgz
-          ";"
+        para = a compressed data file, <filename>snapshot.wgz</filename>;
       listitem
-        para
-          "a manifest,"
-          filename = snapshot.toml
-          ", recording the schema version and a checksum."
+        para = a manifest, <filename>snapshot.toml</filename>, recording the schema version and a checksum.
     note
-      para
-        "Backups are incremental by default. Pass"
-        option = --full
-        "to force a complete copy."
+      para = Backups are incremental by default. Pass <option>--full</option> to force a complete copy.
   section(xml:id="creating-a-backup")
     title = Creating a backup
-    para
-      "Run"
-      command = widget backup
-      "from any directory:"
+    para = Run <command>widget backup</command> from any directory:
     screen =
       | $ widget backup --full
       | Writing snapshot.wgz ... done (4.2 MiB)
@@ -114,38 +96,19 @@ chapter(
       | schedule = "0 3 * * *"   # 03:00 daily
       | keep = 7                 # retain a week of snapshots
     tip
-      para
-        "Set"
-        envar = WIDGET_BACKUP_DIR
-        "to a volume on a different disk than the live database."
+      para = Set <envar>WIDGET_BACKUP_DIR</envar> to a volume on a different disk than the live database.
   section(xml:id="recovery")
     title = Recovery
-    para
-      "To restore from a snapshot, stop the daemon and run"
-      command = widget restore
-      "with the path to a manifest:"
+    para = To restore from a snapshot, stop the daemon and run <command>widget restore</command> with the path to a manifest:
     orderedlist
       listitem
-        para
-          "Stop the service:"
-          command = widget stop
-          "."
+        para = Stop the service: <command>widget stop</command>.
       listitem
-        para
-          "Restore:"
-          command = widget restore
-          replaceable = manifest.toml
-          "."
+        para = Restore: <command>widget restore</command> <replaceable>manifest.toml</replaceable>.
       listitem
-        para
-          "Verify and restart:"
-          command = widget start
-          "."
+        para = Verify and restart: <command>widget start</command>.
     warning
-      para
-        "Restoring overwrites the live database. Never run"
-        command = widget restore
-        "against a production instance without first taking a fresh backup."
+      para = Restoring overwrites the live database. Never run <command>widget restore</command> against a production instance without first taking a fresh backup.
     para = The restore command accepts these options:
     variablelist
       varlistentry
@@ -166,11 +129,13 @@ chapter(
 
 Instances are normally shown as raw XML on this site, but DocBook is the case
 that justifies the flattened view: what you are reading *is* the document — a
-clean nested outline of `section`s, lists, admonitions, and the inline semantics
-(`command`, `filename`, `option`) that make DocBook DocBook. The angle-bracket
-ceremony is gone; the structure that the [stylesheets walk](../xslt/at-scale.md)
-to produce HTML, PDF, and EPUB is all that remains. That outline is exactly why
-one source can feed many outputs.
+clean nested outline of `section`s, lists, and admonitions. Notice how `unxml`
+draws the line. The *block* structure loses its angle brackets entirely; but the
+*inline* prose — a `<para>` with a `<command>` or `<filename>` in it — is kept as
+one flowing line of verbatim XML, because there the markup *is* the content and
+the original reads best. Flatten the scaffolding, quote the prose. What remains
+is exactly the structure the [stylesheets walk](../xslt/at-scale.md) to produce
+HTML, PDF, and EPUB — which is why one source can feed many outputs.
 
 ??? note "The raw DocBook source (73 lines)"
     ``` xml

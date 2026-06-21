@@ -33,8 +33,8 @@ see how a thing works without having to set anything up to believe it.
 The book is built to be jumped into. Each section stands on its own: start with
 the [XSLT tutorial](xslt/index.md) if you want a guided path, or go straight to
 [real-world e-invoicing](einvoicing/index.md) if that's the problem in front of
-you. XPath, XQuery, XSD, and Schematron are there when you need the underlying
-machinery.
+you. XPath, XQuery, and XSD are there when you need the underlying machinery, and
+Schematron when you need rule-based validation on top of it.
 
 The [real-world tour](realworld/index.md) deserves a word of warning. Some of
 what it covers — SOAP, XSL-FO, a few others — is more of historical interest

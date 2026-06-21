@@ -8,8 +8,9 @@ The manual for coming back to XML. Hands-on and example-driven: every concept is
 introduced with a small, complete example — no walls of prose before you see
 real code. New here, or [returning after a while](preface.md)? Start anywhere.
 
-The site covers the core of the XML processing stack: **XSLT**, **XPath**,
-**XQuery**, **XSD**, and **Schematron** — then puts them all together on
+The site covers the core of the XML processing stack — **XSLT**, **XPath**,
+**XQuery**, and **XSD** — plus **Schematron**, the rule-based validation layer
+that the invoicing world leans on heavily. It then puts them all together on
 **real-world e-invoicing** (UBL, EN16931, Peppol) and a tour of **real-world
 XML applications** (SVG, SOAP, Office formats, and more).
 

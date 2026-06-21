@@ -4,6 +4,8 @@ icon: lucide/home
 
 # XML Avant-Garde
 
+![XML Avant-Garde](assets/cover.jpg){ .cover-image }
+
 The manual for coming back to XML. Hands-on and example-driven: every concept is
 introduced with a small, complete example — no walls of prose before you see
 real code. New here, or [returning after a while](preface.md)? Start anywhere.

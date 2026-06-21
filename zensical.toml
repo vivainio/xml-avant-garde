@@ -118,6 +118,9 @@ nav = [
     { "APIs: Python (lxml)" = "realworld/api-python.md" },
     { "APIs: Rust" = "realworld/api-rust.md" },
   ] },
+  { "Appendix" = [
+    { "unxml — reading XML compactly" = "appendix/unxml.md" },
+  ] },
 ]
 
 extra_css = ["stylesheets/extra.css"]

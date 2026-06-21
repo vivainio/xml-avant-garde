@@ -292,7 +292,8 @@ notation:
 |----------------|--------------------|
 | `match X:`     | `xsl:template match="X"` |
 | `apply` / `apply .` | `xsl:apply-templates` (of children / of self) |
-| `<-- expr`     | `xsl:value-of` / `xsl:sequence select="expr"` |
+| `<- expr`      | `xsl:value-of select="expr"` (a string) |
+| `<-- expr`     | `xsl:sequence select="expr"` (a sequence — the doubled arrow) |
 | `name as T := …` | a typed `xsl:variable` / `xsl:param` |
 | `function f:n(args) -> T:` | `xsl:function name="f:n" as="T"` |
 | `@x`, `element {…}` | an attribute / computed element in the result |

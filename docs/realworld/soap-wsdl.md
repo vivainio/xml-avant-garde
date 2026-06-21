@@ -172,6 +172,101 @@ concrete protocol; the `service` then says at which URL it lives.
     (`…/wsdl/soap12/`), the same versioning-by-namespace idea as the envelopes
     below.
 
+## WCF in the wild: when the namespaces multiply
+
+The travel example embeds *one* `xs:schema` inline, in the service's own
+namespace. Real toolkits rarely do that. **Windows Communication Foundation**
+(WCF) — the .NET stack that generated a large fraction of the SOAP services still
+running today — hands you a WSDL where the schema is *split across several
+documents*, stitched together with `xsd:import`, and the namespaces are no longer
+hand-chosen. They are minted by the toolkit, and they leak the server's
+implementation straight onto the wire.
+
+Hit a WCF endpoint's `?wsdl` and the `wsdl:types` looks like this:
+
+``` xml title="CrmService.svc?wsdl (the types section)" linenums="1"
+<wsdl:types>
+  <xsd:schema targetNamespace="http://tempuri.org/">     <!-- (1)! -->
+    <xsd:import namespace="http://schemas.datacontract.org/2004/07/Contoso.Crm"/>
+    <xsd:element name="GetCustomerResponse">
+      <xsd:complexType><xsd:sequence>
+        <xsd:element name="GetCustomerResult" nillable="true"
+                     type="q1:Customer"
+                     xmlns:q1="http://schemas.datacontract.org/2004/07/Contoso.Crm"/>
+      </xsd:sequence></xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+
+  <xsd:schema targetNamespace="http://schemas.datacontract.org/2004/07/Contoso.Crm"> <!-- (2)! -->
+    <xsd:complexType name="Customer">
+      <xsd:sequence>
+        <xsd:element name="Id" type="xsd:int"/>
+        <xsd:element name="Name" nillable="true" type="xsd:string"/>  <!-- (3)! -->
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:schema>
+</wsdl:types>
+```
+
+1.  **`http://tempuri.org/`** is WCF's *default* target namespace — literally "temporary
+    URI". It is what you get when nobody sets one, and it ships to production
+    constantly. The page's thesis was that a namespace marks ownership; `tempuri.org`
+    is the sound of that decision never being made.
+2.  The contract types live in a **separate schema document**, in their own
+    namespace, pulled in by the `xsd:import` above. The single inline schema of the
+    travel example was the simple case; this split-by-namespace layout is the norm
+    once a real toolkit is involved.
+3.  `nillable="true"` is how a .NET reference type that can be `null` shows up in the
+    schema. On the wire, a null arrives as `<Name i:nil="true"/>`, where `i` is the
+    `XMLSchema-instance` namespace — the same `xsi` you met in
+    [the XSD chapter](../xsd/index.md), under WCF's preferred prefix.
+
+!!! note "`schemas.datacontract.org/2004/07/Contoso.Crm` — the CLR namespace on the wire"
+    That second `targetNamespace` is not arbitrary. WCF's `DataContractSerializer`
+    builds it from a fixed prefix (`http://schemas.datacontract.org/2004/07/`) plus
+    the **.NET CLR namespace** of the class — here `Contoso.Crm`. The server's
+    internal type organization is now part of the public contract. Rename the C#
+    namespace and the XML namespace changes with it, breaking every client. This is
+    namespaces carrying *provenance* taken to its literal extreme: the wire format
+    remembers what assembly the object came from.
+
+There is one more WCF-ism worth knowing. The `?wsdl` you get back is rarely a
+single file: WCF emits a *root* WSDL that uses `wsdl:import` and `xsd:import` to
+point at sibling documents (`?wsdl=wsdl0`, `?xsd=xsd0`, …). Tools that cannot
+follow those links choke on it, so .NET 4.5 added **`?singleWsdl`**, which
+flattens the whole graph into one self-contained document — the shape the rest of
+this page assumes.
+
+Pointed at the flattened file, `unxml --wsdl` resolves the imports and renders the
+contract as one tree, datacontract namespace and all:
+
+``` text title="unxml --wsdl CrmService.svc?singleWsdl"
+wsdl http://tempuri.org/
+  ns tns = http://tempuri.org/
+  types
+    schema http://tempuri.org/
+      import http://schemas.datacontract.org/2004/07/Contoso.Crm
+      element GetCustomerResponse
+        GetCustomerResult : q1:Customer nillable
+    schema http://schemas.datacontract.org/2004/07/Contoso.Crm
+      type Customer
+        Id : xsd:int
+        Name : xsd:string nillable
+  message GetCustomerRequest
+    part parameters : tns:GetCustomer
+  message GetCustomerResponse
+    part parameters : tns:GetCustomerResponse
+  portType ICrmService
+    op GetCustomer
+      in : tns:GetCustomerRequest
+      out : tns:GetCustomerResponse
+```
+
+The two schema documents now sit side by side under `types`, with the `import`
+line marking the seam between them. The response element's `q1:Customer` reaches
+across that seam into the datacontract namespace, and the `nillable` flags survive
+the flattening — the .NET-shaped contract reads top to bottom in fourteen lines.
+
 ## Two SOAP namespaces in the wild
 
 There are two SOAP envelope namespaces you will meet, and the version is encoded
@@ -193,7 +288,11 @@ idiom: [Atom does the same](atom-feeds.md), and so does
 - Namespaces partition a document by **ownership**: transport vs. infrastructure
   vs. payload, each evolving on its own schedule.
 - A schema can be **embedded** (`wsdl:types` wraps an `xs:schema`), not just
-  referenced — XSD travels *inside* other vocabularies.
+  referenced — and real toolkits **split it across several `xsd:import`ed
+  documents**, one namespace each. XSD travels *inside* other vocabularies.
+- Toolkit-minted namespaces leak provenance: WCF's
+  `schemas.datacontract.org/2004/07/<CLR namespace>` puts the server's own type
+  layout on the wire, and `tempuri.org` marks a namespace nobody bothered to set.
 - The `tns` / `targetNamespace` pairing is how a document refers to its own
   definitions by name.
 - **Versioning by namespace URI** is a deliberate design choice, not an accident.

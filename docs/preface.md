@@ -17,6 +17,12 @@ on what a tag is, a spec page written for compiler authors, or a 2004 blog post
 half of whose advice is now obsolete — verbose, dated, and aimed at someone
 who's never seen any of this before.
 
+There's a reputation to address, too. XML, the popular imagination holds, is the
+domain of fifty-year-old Java developers who listen to Dire Straits and remember
+when SOAP was the future. And — fine — that's largely true. But it turns out the
+door is unlocked, the music is actually pretty good, and you can still join. No
+one will check your age at the angle bracket.
+
 This is the manual I wanted instead. It assumes you can program and you've seen
 angle brackets before, so it skips the throat-clearing and shows you what's
 actually going on. I don't expect you to follow along at a keyboard,

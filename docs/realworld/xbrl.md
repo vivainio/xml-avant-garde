@@ -116,11 +116,11 @@ uses *linkbases* and a Formula spec — but the principle is identical: XSD chec
 shape, a higher layer checks that the numbers make sense (e.g. that line items sum
 to the reported total).
 
-## What XBRL teaches
+## Things to note
 
 - You can **define your own namespace of concepts** and have them slot into a
-  standard via **substitution groups** — the most powerful XSD extension mechanism,
-  doing industrial work.
+  standard via **substitution groups** — XSD's most far-reaching extension
+  mechanism, here doing industrial-scale work.
 - **Context** and **unit** factoring keeps thousands of facts from repeating their
   who/when/in-what — a namespaced answer to data normalization.
 - Real documents pile up *many* namespaces; the value of a flattening view like
@@ -134,6 +134,6 @@ to the reported total).
 That is the tour. Across eight vocabularies the same handful of namespace moves
 kept reappearing — default vs prefixed, borrowing (`xlink`, `fo`, Dublin Core),
 versioning by URI, and three flavors of extension (wildcard, container, reserved
-prefix, substitution group). Once you can spot those, no namespaced XML document
-is unfamiliar — only more or less verbose. And when it is verbose, you now know to
-reach for [`unxml`](index.md#reading-xml-with-unxml).
+prefix, substitution group). Once you can spot those, most namespaced XML reads
+as familiar shapes — only more or less verbose. And when it is verbose, there's
+always [`unxml`](index.md#reading-xml-with-unxml).

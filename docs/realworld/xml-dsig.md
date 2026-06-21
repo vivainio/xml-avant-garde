@@ -97,7 +97,7 @@ flowchart LR
     above) only keeps the namespaces the fragment *actually uses*, which is why
     WS-Security mandates it. Picking the wrong one is a classic interop bug.
 
-## What XML-DSig teaches
+## Things to note
 
 - Because namespaces (and attribute order, and whitespace) let the *same* document
   take *many* byte forms, signing XML requires a **canonicalization** step that

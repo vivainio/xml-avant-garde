@@ -117,15 +117,15 @@ You must bind the prefixes in your [XPath](../xpath/index.md) host and query
 A document could declare `xmlns:foo="…wordprocessingml…"` and `//foo:p` would
 still be wrong unless *you* bound `foo` to that URI too.
 
-## What Office documents teach
+## Things to note
 
 - A "file" can be a **package** of XML parts; the interesting structure is *across*
   parts, not within one.
 - **Relationship indirection** (`r:id` → `.rels`) keeps markup stable and keeps
   binary assets out of the XML.
 - A large vocabulary can be organized **one-prefix-per-app** (OOXML) or
-  **one-prefix-per-concept** (ODF) — both are namespace strategies you will copy
-  one day.
+  **one-prefix-per-concept** (ODF) — two namespace strategies, with different
+  trade-offs.
 - `xml:space` and `xml:lang` ride the always-available `xml:` namespace.
 
 Next: [Atom and feed extensions](atom-feeds.md), where the lesson flips — instead

@@ -118,7 +118,7 @@ PCL, PNG). Because the FO is *generated*, the same stylesheet can render thousan
 of invoices, and changing the page layout means editing the stylesheet's literal
 `fo:` blocks — not every document.
 
-## What XSL-FO/FOP teaches
+## Things to note
 
 - A vocabulary can be **produced**, not authored: the readable artifact is the
   stylesheet, the FO is intermediate.

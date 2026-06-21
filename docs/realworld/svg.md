@@ -116,7 +116,7 @@ browser but my [XPath](../xpath/index.md) finds nothing" confusion.
     [XPath chapter](../xpath/node-tests-predicates.md) introduced, biting in a
     real document.
 
-## What SVG teaches
+## Things to note
 
 - A **default namespace** lets a whole subtree go prefix-free — convenient for
   authoring, but every name is still *in* that namespace.

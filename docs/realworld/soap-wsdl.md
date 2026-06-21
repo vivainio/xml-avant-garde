@@ -139,7 +139,7 @@ namespace*. The namespace **is** the version flag. This is a recurring real-worl
 idiom: [Atom does the same](atom-feeds.md), and so does
 [XBRL](xbrl.md).
 
-## What SOAP/WSDL teaches
+## Things to note
 
 - Namespaces partition a document by **ownership**: transport vs. infrastructure
   vs. payload, each evolving on its own schedule.

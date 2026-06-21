@@ -134,7 +134,7 @@ Both default-namespace their core, so the
 URI to a prefix and query `//g:trkpt`. The vendor extensions (`gpxtpx:`, `gx:`)
 are already prefixed, but you still must bind *their* URIs in your query host.
 
-## What GPX/KML teach
+## Things to note
 
 - Two real, readable geo vocabularies that are small enough to learn whole — and
   whose **schemas** read cleanly under `unxml --xsd`.

@@ -107,13 +107,13 @@ base.
     **unqualified** and bolts extensions on. Both end up extensible — the route
     differs.
 
-## What Atom/feeds teach
+## Things to note
 
 - A small, stable core plus a **wildcard extension point** beats one ever-growing
   schema — third parties extend on their own namespaces and timelines.
 - Unknown namespaces are **safely ignored**, which is what makes the web's feeds
   forward-compatible.
-- **Dublin Core** is the archetypal borrowed vocabulary; you will keep meeting it.
+- **Dublin Core** is the archetypal borrowed vocabulary, and a common one to meet.
 - "No namespace" (RSS core) and "everything namespaced" (Atom core) are both
   workable starting points.
 

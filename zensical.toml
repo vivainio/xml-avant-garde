@@ -22,6 +22,7 @@ repo_name = "vivainio/xml-avant-garde"
 # added here as the site grows.
 nav = [
   { "Home" = "index.md" },
+  { "Why this book" = "preface.md" },
   { "XSLT Tutorial" = [
     { "Overview" = "xslt/index.md" },
     { "Your first transformation" = "xslt/first-transformation.md" },

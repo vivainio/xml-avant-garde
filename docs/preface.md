@@ -42,7 +42,8 @@ lot of what you do.
 A note on how it was made: I wrote it with **Claude Code**. That's part of why
 it can be both broad and current — covering the whole processing stack and the
 places XML actually shows up today — while keeping every example real rather
-than illustrative. It's meant to be read, not consulted — written by someone
-who was standing exactly where you are.
+than illustrative. It's built with [Zensical](https://zensical.org) and
+published on GitHub Pages. It's meant to be read, not consulted — written by
+someone who was standing exactly where you are.
 
 [Start the XSLT tutorial :material-arrow-right:](xslt/index.md){ .md-button .md-button--primary }

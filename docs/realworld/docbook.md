@@ -53,6 +53,202 @@ studied separately as a large XSLT codebase.
     produces a "cloud" edition and an "on-prem" edition by *filtering* on this
     attribute at build time — single-source publishing in one attribute.
 
+## A fuller page, as its skeleton
+
+The specimen above is deliberately tiny. Real DocBook pages are *deep* — and
+that depth is the whole point, but it also makes the raw markup tiring to read.
+Here is a fuller, ~70-line chapter — the **Recovery** section is the one the
+small specimen's `<xref linkend="recovery"/>` was pointing at — rendered with
+[`unxml`](../appendix/unxml.md) as its **semantic skeleton**:
+
+``` text title="unxml backups.xml — the chapter as an outline"
+chapter(
+    version="5.2",
+    xml:id="backups",
+    xml:lang="en",
+    xmlns="http://docbook.org/ns/docbook",
+    xmlns:xlink="http://www.w3.org/1999/xlink")
+  title = Backups and recovery
+  para
+    "The"
+    command = widget
+    "daemon keeps its state in a single database. This chapter explains how to snapshot that state and how to restore it after a mishap."
+  section(xml:id="how-backups-work")
+    title = How backups work
+    para
+      "A backup is a consistent, point-in-time copy written to the directory named by the"
+      envar = WIDGET_BACKUP_DIR
+      "environment variable. Each run produces two artefacts:"
+    itemizedlist
+      listitem
+        para
+          "a compressed data file,"
+          filename = snapshot.wgz
+          ";"
+      listitem
+        para
+          "a manifest,"
+          filename = snapshot.toml
+          ", recording the schema version and a checksum."
+    note
+      para
+        "Backups are incremental by default. Pass"
+        option = --full
+        "to force a complete copy."
+  section(xml:id="creating-a-backup")
+    title = Creating a backup
+    para
+      "Run"
+      command = widget backup
+      "from any directory:"
+    screen =
+      | $ widget backup --full
+      | Writing snapshot.wgz ... done (4.2 MiB)
+      | Manifest written to /var/backups/widget/snapshot.toml
+    para =
+      | To schedule it, point your scheduler at the same command. A minimal
+      |       configuration block looks like this:
+    programlisting(language="toml") =
+      | [backup]
+      | dir = "/var/backups/widget"
+      | schedule = "0 3 * * *"   # 03:00 daily
+      | keep = 7                 # retain a week of snapshots
+    tip
+      para
+        "Set"
+        envar = WIDGET_BACKUP_DIR
+        "to a volume on a different disk than the live database."
+  section(xml:id="recovery")
+    title = Recovery
+    para
+      "To restore from a snapshot, stop the daemon and run"
+      command = widget restore
+      "with the path to a manifest:"
+    orderedlist
+      listitem
+        para
+          "Stop the service:"
+          command = widget stop
+          "."
+      listitem
+        para
+          "Restore:"
+          command = widget restore
+          replaceable = manifest.toml
+          "."
+      listitem
+        para
+          "Verify and restart:"
+          command = widget start
+          "."
+    warning
+      para
+        "Restoring overwrites the live database. Never run"
+        command = widget restore
+        "against a production instance without first taking a fresh backup."
+    para = The restore command accepts these options:
+    variablelist
+      varlistentry
+        term
+          option = --dry-run
+        listitem
+          para =
+            | Validate the manifest and report what would change,
+            |           without writing anything.
+      varlistentry
+        term
+          option = --force
+        listitem
+          para =
+            | Skip the schema-version check. Use only when migrating
+            |           between major versions.
+```
+
+Instances are normally shown as raw XML on this site, but DocBook is the case
+that justifies the flattened view: what you are reading *is* the document — a
+clean nested outline of `section`s, lists, admonitions, and the inline semantics
+(`command`, `filename`, `option`) that make DocBook DocBook. The angle-bracket
+ceremony is gone; the structure that the [stylesheets walk](../xslt/at-scale.md)
+to produce HTML, PDF, and EPUB is all that remains. That outline is exactly why
+one source can feed many outputs.
+
+??? note "The raw DocBook source (73 lines)"
+    ``` xml
+    <chapter xmlns="http://docbook.org/ns/docbook"
+             xmlns:xlink="http://www.w3.org/1999/xlink"
+             version="5.2" xml:id="backups" xml:lang="en">
+      <title>Backups and recovery</title>
+    
+      <para>The <command>widget</command> daemon keeps its state in a single
+        database. This chapter explains how to snapshot that state and how to
+        restore it after a mishap.</para>
+    
+      <section xml:id="how-backups-work">
+        <title>How backups work</title>
+        <para>A backup is a consistent, point-in-time copy written to the directory
+          named by the <envar>WIDGET_BACKUP_DIR</envar> environment variable. Each
+          run produces two artefacts:</para>
+        <itemizedlist>
+          <listitem><para>a compressed data file, <filename>snapshot.wgz</filename>;</para></listitem>
+          <listitem><para>a manifest, <filename>snapshot.toml</filename>, recording the
+            schema version and a checksum.</para></listitem>
+        </itemizedlist>
+        <note>
+          <para>Backups are incremental by default. Pass
+            <option>--full</option> to force a complete copy.</para>
+        </note>
+      </section>
+    
+      <section xml:id="creating-a-backup">
+        <title>Creating a backup</title>
+        <para>Run <command>widget backup</command> from any directory:</para>
+        <screen>$ widget backup --full
+    Writing snapshot.wgz ... done (4.2 MiB)
+    Manifest written to /var/backups/widget/snapshot.toml</screen>
+        <para>To schedule it, point your scheduler at the same command. A minimal
+          configuration block looks like this:</para>
+        <programlisting language="toml">[backup]
+    dir = "/var/backups/widget"
+    schedule = "0 3 * * *"   # 03:00 daily
+    keep = 7                 # retain a week of snapshots</programlisting>
+        <tip>
+          <para>Set <envar>WIDGET_BACKUP_DIR</envar> to a volume on a different
+            disk than the live database.</para>
+        </tip>
+      </section>
+    
+      <section xml:id="recovery">
+        <title>Recovery</title>
+        <para>To restore from a snapshot, stop the daemon and run
+          <command>widget restore</command> with the path to a manifest:</para>
+        <orderedlist>
+          <listitem><para>Stop the service: <command>widget stop</command>.</para></listitem>
+          <listitem><para>Restore: <command>widget restore</command>
+            <replaceable>manifest.toml</replaceable>.</para></listitem>
+          <listitem><para>Verify and restart: <command>widget start</command>.</para></listitem>
+        </orderedlist>
+        <warning>
+          <para>Restoring overwrites the live database. Never run
+            <command>widget restore</command> against a production instance without
+            first taking a fresh backup.</para>
+        </warning>
+        <para>The restore command accepts these options:</para>
+        <variablelist>
+          <varlistentry>
+            <term><option>--dry-run</option></term>
+            <listitem><para>Validate the manifest and report what would change,
+              without writing anything.</para></listitem>
+          </varlistentry>
+          <varlistentry>
+            <term><option>--force</option></term>
+            <listitem><para>Skip the schema-version check. Use only when migrating
+              between major versions.</para></listitem>
+          </varlistentry>
+        </variablelist>
+      </section>
+    </chapter>
+    ```
+
 ## The namespace pattern it shows: a vocabulary growing up
 
 DocBook is the textbook case of a vocabulary **acquiring a namespace when it

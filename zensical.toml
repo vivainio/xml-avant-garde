@@ -61,6 +61,7 @@ nav = [
     { "Error handling" = "xslt/error-handling.md" },
     { "Streaming" = "xslt/streaming.md" },
     { "Packages" = "xslt/packages.md" },
+    { "XSLT at scale: reading DocBook xslTNG" = "xslt/at-scale.md" },
   ] },
   { "XPath" = [
     { "Overview" = "xpath/index.md" },
@@ -105,6 +106,7 @@ nav = [
     { "SVG" = "realworld/svg.md" },
     { "SOAP and WSDL" = "realworld/soap-wsdl.md" },
     { "Office: OOXML and ODF" = "realworld/office-ooxml-odf.md" },
+    { "DocBook" = "realworld/docbook.md" },
     { "Atom and feed extensions" = "realworld/atom-feeds.md" },
     { "XSL-FO and Apache FOP" = "realworld/xsl-fo-fop.md" },
     { "XML Signature" = "realworld/xml-dsig.md" },

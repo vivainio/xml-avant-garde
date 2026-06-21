@@ -72,11 +72,12 @@ are ordered roughly from "you see it every day" to "you only see it in finance".
 | 1 | [**SVG**](svg.md) | A *default* namespace plus a borrowed `xlink:` prefix — and the same SVG **embedded inside HTML**, the canonical mixed-namespace document |
 | 2 | [**SOAP & WSDL**](soap-wsdl.md) | Several namespaces as a *contract*: an envelope wrapping a payload, and a WSDL that `import`s its XSD types |
 | 3 | [**Office: OOXML & ODF**](office-ooxml-odf.md) | A ZIP of XML *parts*, each a forest of namespaces, wired together by relationships |
-| 4 | [**Atom & feed extensions**](atom-feeds.md) | *Extending* a base vocabulary — Dublin Core, iTunes podcast tags — without touching it |
-| 5 | [**XSL-FO & Apache FOP**](xsl-fo-fop.md) | A vocabulary that is *generated*, not authored: XSLT → `fo:` → PDF |
-| 6 | [**XML Signature**](xml-dsig.md) | Why namespaces force **canonicalization**: signing bytes that mean the same thing |
-| 7 | [**GPX & KML**](geo-gpx-kml.md) | Two geo vocabularies, two extension styles (`<extensions>` vs a `gx:` prefix) |
-| 8 | [**XBRL**](xbrl.md) | Namespacing taken to the limit: a taxonomy of concepts in *your* namespace, built on `xbrli:` |
+| 4 | [**DocBook**](docbook.md) | A vocabulary *growing up*: DocBook 4's no-namespace DTD becomes DocBook 5's namespaced RELAX NG — semantic markup, one source to many outputs |
+| 5 | [**Atom & feed extensions**](atom-feeds.md) | *Extending* a base vocabulary — Dublin Core, iTunes podcast tags — without touching it |
+| 6 | [**XSL-FO & Apache FOP**](xsl-fo-fop.md) | A vocabulary that is *generated*, not authored: XSLT → `fo:` → PDF |
+| 7 | [**XML Signature**](xml-dsig.md) | Why namespaces force **canonicalization**: signing bytes that mean the same thing |
+| 8 | [**GPX & KML**](geo-gpx-kml.md) | Two geo vocabularies, two extension styles (`<extensions>` vs a `gx:` prefix) |
+| 9 | [**XBRL**](xbrl.md) | Namespacing taken to the limit: a taxonomy of concepts in *your* namespace, built on `xbrli:` |
 
 ## The tour — working with XML in code
 

@@ -9,8 +9,9 @@ concept is introduced with a small, complete, runnable example — no walls of
 prose before you see real code.
 
 The site covers the core of the XML processing stack: **XSLT**, **XPath**,
-**XSD**, and **Schematron** — then puts them all together on **real-world
-e-invoicing** (UBL, EN16931, Peppol).
+**XQuery**, **XSD**, and **Schematron** — then puts them all together on
+**real-world e-invoicing** (UBL, EN16931, Peppol) and a tour of **real-world
+XML applications** (SVG, SOAP, Office formats, and more).
 
 [Start the XSLT tutorial :material-arrow-right:](xslt/index.md){ .md-button .md-button--primary }
 
@@ -35,6 +36,15 @@ e-invoicing** (UBL, EN16931, Peppol).
     predicates, and the core function library.
 
     [:octicons-arrow-right-24: Open](xpath/index.md)
+
+-   :material-database-search-outline:{ .lg .middle } **XQuery**
+
+    ---
+
+    A full query and transformation language for XML. FLWOR expressions, how it
+    compares to XSLT, combining the two, and where it fits in the real world.
+
+    [:octicons-arrow-right-24: Open](xquery/index.md)
 
 -   :material-file-check-outline:{ .lg .middle } **XSD**
 
@@ -63,5 +73,14 @@ e-invoicing** (UBL, EN16931, Peppol).
     full scale.
 
     [:octicons-arrow-right-24: Open](einvoicing/index.md)
+
+-   :material-shape-outline:{ .lg .middle } **Real-world XML applications**
+
+    ---
+
+    A tour of XML in the wild: SVG, SOAP/WSDL, Office formats, Atom, XSL-FO,
+    XML Signature, GPX/KML, XBRL, and using XML from Java, .NET, Python, and Rust.
+
+    [:octicons-arrow-right-24: Open](realworld/index.md)
 
 </div>

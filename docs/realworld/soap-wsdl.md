@@ -182,47 +182,37 @@ documents*, stitched together with `xsd:import`, and the namespaces are no longe
 hand-chosen. They are minted by the toolkit, and they leak the server's
 implementation straight onto the wire.
 
-Hit a WCF endpoint's `?wsdl` and the `wsdl:types` looks like this:
+Hit a WCF endpoint's `?wsdl` and the `wsdl:types` opens like this — and this is
+just the *first* of three schemas, for *one* of three operations:
 
-``` xml title="CrmService.svc?wsdl (the types section)" linenums="1"
-<wsdl:types>
-  <xsd:schema targetNamespace="http://tempuri.org/">     <!-- (1)! -->
-    <xsd:import namespace="http://schemas.datacontract.org/2004/07/Contoso.Crm"/>
-    <xsd:element name="GetCustomerResponse">
-      <xsd:complexType><xsd:sequence>
-        <xsd:element name="GetCustomerResult" nillable="true"
-                     type="q1:Customer"
-                     xmlns:q1="http://schemas.datacontract.org/2004/07/Contoso.Crm"/>
-      </xsd:sequence></xsd:complexType>
-    </xsd:element>
-  </xsd:schema>
-
-  <xsd:schema targetNamespace="http://schemas.datacontract.org/2004/07/Contoso.Crm"> <!-- (2)! -->
-    <xsd:complexType name="Customer">
-      <xsd:sequence>
-        <xsd:element name="Id" type="xsd:int"/>
-        <xsd:element name="Name" nillable="true" type="xsd:string"/>  <!-- (3)! -->
-      </xsd:sequence>
-    </xsd:complexType>
-  </xsd:schema>
-</wsdl:types>
+``` xml title="CrmService.svc?wsdl (the opening of wsdl:types)"
+<xsd:schema targetNamespace="http://tempuri.org/">         <!-- (1)! -->
+  <xsd:import namespace="http://schemas.datacontract.org/2004/07/Contoso.Crm"/>
+  <xsd:import namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+  <xsd:element name="GetCustomerResponse">
+    <xsd:complexType><xsd:sequence>
+      <xsd:element name="GetCustomerResult" nillable="true"     <!-- (2)! -->
+                   type="q1:Customer"
+                   xmlns:q1="http://schemas.datacontract.org/2004/07/Contoso.Crm"/>
+    </xsd:sequence></xsd:complexType>
+  </xsd:element>
+  <!-- … and FindCustomers, CreateOrder, each with a request and response wrapper -->
+</xsd:schema>
 ```
 
 1.  **`http://tempuri.org/`** is WCF's *default* target namespace — literally "temporary
     URI". It is what you get when nobody sets one, and it ships to production
     constantly. The page's thesis was that a namespace marks ownership; `tempuri.org`
-    is the sound of that decision never being made.
-2.  The contract types live in a **separate schema document**, in their own
-    namespace, pulled in by the `xsd:import` above. The single inline schema of the
-    travel example was the simple case; this split-by-namespace layout is the norm
-    once a real toolkit is involved.
-3.  `nillable="true"` is how a .NET reference type that can be `null` shows up in the
-    schema. On the wire, a null arrives as `<Name i:nil="true"/>`, where `i` is the
-    `XMLSchema-instance` namespace — the same `xsi` you met in
+    is the sound of that decision never being made. The two `xsd:import`s pull in the
+    other two namespaces this service drags along: one for the data contracts, one
+    for collections (below).
+2.  `nillable="true"` is how a .NET reference type that can be `null` shows up in the
+    schema. On the wire, a null arrives as `<GetCustomerResult i:nil="true"/>`, where
+    `i` is the `XMLSchema-instance` namespace — the same `xsi` you met in
     [the XSD chapter](../xsd/index.md), under WCF's preferred prefix.
 
 !!! note "`schemas.datacontract.org/2004/07/Contoso.Crm` — the CLR namespace on the wire"
-    That second `targetNamespace` is not arbitrary. WCF's `DataContractSerializer`
+    That imported namespace is not arbitrary. WCF's `DataContractSerializer`
     builds it from a fixed prefix (`http://schemas.datacontract.org/2004/07/`) plus
     the **.NET CLR namespace** of the class — here `Contoso.Crm`. The server's
     internal type organization is now part of the public contract. Rename the C#
@@ -230,15 +220,17 @@ Hit a WCF endpoint's `?wsdl` and the `wsdl:types` looks like this:
     namespaces carrying *provenance* taken to its literal extreme: the wire format
     remembers what assembly the object came from.
 
-There is one more WCF-ism worth knowing. The `?wsdl` you get back is rarely a
-single file: WCF emits a *root* WSDL that uses `wsdl:import` and `xsd:import` to
-point at sibling documents (`?wsdl=wsdl0`, `?xsd=xsd0`, …). Tools that cannot
-follow those links choke on it, so .NET 4.5 added **`?singleWsdl`**, which
-flattens the whole graph into one self-contained document — the shape the rest of
-this page assumes.
+Now multiply that out. A modest CRM service — three operations (`GetCustomer`,
+`FindCustomers`, `CreateOrder`), a handful of data contracts, an enum, some
+collections, one fault — is **220 lines** of WSDL like the above, spread across
+three schemas and four namespaces. Reading it by eye is exactly the chore that
+makes people hate SOAP.
 
-Pointed at the flattened file, `unxml --wsdl` resolves the imports and renders the
-contract as one tree, datacontract namespace and all:
+So don't. WCF's `?wsdl` is also rarely one file — it emits a *root* WSDL that
+`wsdl:import`s and `xsd:import`s sibling documents (`?wsdl=wsdl0`, `?xsd=xsd0`, …);
+.NET 4.5 added **`?singleWsdl`** to flatten the graph into one document. Point
+`unxml --wsdl` at that, and the whole service — every namespace, type, operation,
+binding and endpoint — renders as one tree you can actually read:
 
 ``` text title="unxml --wsdl CrmService.svc?singleWsdl"
 wsdl http://tempuri.org/
@@ -246,26 +238,108 @@ wsdl http://tempuri.org/
   types
     schema http://tempuri.org/
       import http://schemas.datacontract.org/2004/07/Contoso.Crm
+      import http://schemas.microsoft.com/2003/10/Serialization/Arrays
+      element GetCustomer
+        id : xsd:int
       element GetCustomerResponse
         GetCustomerResult : q1:Customer nillable
+      element FindCustomers
+        namePrefix : xsd:string nillable
+        tier : q1:CustomerTier
+      element FindCustomersResponse
+        FindCustomersResult : q1:ArrayOfCustomer nillable
+      element CreateOrder
+        order : q1:Order nillable
+      element CreateOrderResponse
+        CreateOrderResult : q1:OrderConfirmation nillable
     schema http://schemas.datacontract.org/2004/07/Contoso.Crm
+      import http://schemas.microsoft.com/2003/10/Serialization/Arrays
       type Customer
         Id : xsd:int
         Name : xsd:string nillable
-  message GetCustomerRequest
-    part parameters : tns:GetCustomer
-  message GetCustomerResponse
-    part parameters : tns:GetCustomerResponse
+        Tier : tns:CustomerTier
+        Addresses : tns:ArrayOfAddress nillable
+        Tags : a:ArrayOfstring nillable
+        CreatedUtc : xsd:dateTime
+      type CustomerTier : xsd:string
+        | Standard
+        | Gold
+        | Platinum
+      type Address
+        Line1 : xsd:string nillable
+        City : xsd:string nillable
+        Country : xsd:string nillable
+        PostalCode : xsd:string nillable
+      type ArrayOfAddress
+        Address : tns:Address * nillable
+      type ArrayOfCustomer
+        Customer : tns:Customer * nillable
+      type Order
+        OrderId : xsd:string nillable
+        CustomerId : xsd:int
+        Lines : tns:ArrayOfOrderLine nillable
+        Total : xsd:decimal
+      type OrderLine
+        Sku : xsd:string nillable
+        Quantity : xsd:int
+        UnitPrice : xsd:decimal
+      type ArrayOfOrderLine
+        OrderLine : tns:OrderLine * nillable
+      type OrderConfirmation
+        OrderId : xsd:string nillable
+        Accepted : xsd:boolean
+        Message : xsd:string nillable
+      type CrmFault
+        Code : xsd:int
+        Reason : xsd:string nillable
+    schema http://schemas.microsoft.com/2003/10/Serialization/Arrays
+      type ArrayOfstring
+        string : xsd:string * nillable
   portType ICrmService
     op GetCustomer
       in : tns:GetCustomerRequest
       out : tns:GetCustomerResponse
+    op FindCustomers
+      in : tns:FindCustomersRequest
+      out : tns:FindCustomersResponse
+    op CreateOrder
+      in : tns:CreateOrderRequest
+      out : tns:CreateOrderResponse
+      fault CrmFaultFault : tns:ICrmService_CreateOrder_CrmFaultFault
+  binding BasicHttpBinding_ICrmService : tns:ICrmService
+    soap document
+    op GetCustomer  action http://tempuri.org/ICrmService/GetCustomer
+      in : literal
+      out : literal
+    op FindCustomers  action http://tempuri.org/ICrmService/FindCustomers
+      in : literal
+      out : literal
+    op CreateOrder  action http://tempuri.org/ICrmService/CreateOrder
+      in : literal
+      out : literal
+      fault CrmFaultFault : literal
+  service CrmService
+    port BasicHttpBinding_ICrmService : tns:BasicHttpBinding_ICrmService
+      address https://crm.contoso.example/CrmService.svc
 ```
 
-The two schema documents now sit side by side under `types`, with the `import`
-line marking the seam between them. The response element's `q1:Customer` reaches
-across that seam into the datacontract namespace, and the `nillable` flags survive
-the flattening — the .NET-shaped contract reads top to bottom in fourteen lines.
+Everything the 220 lines were hiding is now legible at a glance:
+
+- The **three namespaces** sit as three `schema` blocks — `tempuri.org` for the
+  operation wrappers, the `datacontract.org/…/Contoso.Crm` for the business types,
+  and `…/Serialization/Arrays` (prefix `a`) where WCF parks collections of
+  primitives like `ArrayOfstring`.
+- **Enums** render as a choice of values (`CustomerTier : xsd:string` with
+  `| Standard | Gold | Platinum`); **collections** show as `* nillable` —
+  the `maxOccurs="unbounded"` repeat that the raw `ArrayOf…` wrapper types bury.
+- The contract reads as a **sentence per layer**, exactly as the travel example
+  promised: `portType` is *what* (three ops, one with a `fault`), `binding` is
+  *how* (`soap document`, `literal`, a SOAPAction per op), `service` is *where*
+  (the `.svc` endpoint).
+
+That is the argument for a structural renderer in one screen: the namespaces, the
+nesting, and the `ArrayOf…`/wrapper noise that make WCF WSDL a wall of angle
+brackets all collapse into a contract you can read top to bottom.
 
 ## Two SOAP namespaces in the wild
 

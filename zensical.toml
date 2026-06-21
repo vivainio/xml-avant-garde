@@ -6,7 +6,7 @@
 [project]
 
 site_name = "XML Avant-Garde"
-site_description = "Hands-on tutorials for the XML family — starting with XSLT."
+site_description = "The manual for coming back to XML."
 site_author = "Ville Vainio"
 site_url = "https://vivainio.github.io/xml-avant-garde/"
 

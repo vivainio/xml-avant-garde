@@ -4,9 +4,9 @@ icon: lucide/home
 
 # XML Avant-Garde
 
-Hands-on, example-driven tutorials for the XML family of technologies. Every
-concept is introduced with a small, complete, runnable example — no walls of
-prose before you see real code.
+The manual for coming back to XML. Hands-on and example-driven: every concept is
+introduced with a small, complete example — no walls of prose before you see
+real code. New here, or [returning after a while](preface.md)? Start anywhere.
 
 The site covers the core of the XML processing stack: **XSLT**, **XPath**,
 **XQuery**, **XSD**, and **Schematron** — then puts them all together on

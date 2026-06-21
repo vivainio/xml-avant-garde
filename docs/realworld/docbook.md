@@ -111,3 +111,36 @@ when the document was written — collects the dividend.
     **DocBook xslTNG** stylesheets as a case study in
     [XSLT at scale](../xslt/at-scale.md) — modes, function libraries, and
     import-precedence customization layers in a real 50-file project.
+
+## The modern move: author light, generate DocBook
+
+If you started a documentation project today, you would probably *not* type
+DocBook by hand. The field reached a clear conclusion: **XML is an excellent
+machine format and an awkward human authoring format.** Angle brackets are
+verbose, and writers resent them.
+
+So the modern pattern inverts the roles. Authors write **lightweight markup** —
+most often **[AsciiDoc](https://asciidoc.org/)** (via *Asciidoctor*) or
+Markdown — and a tool *generates* DocBook from it:
+
+``` asciidoc title="guide.adoc — the same content, hand-friendly"
+== Installation
+
+Run `widget init` in your project root. It writes a `widget.toml` you can edit.
+
+WARNING: Never run `widget reset` on a production database.
+```
+
+`asciidoctor -b docbook guide.adoc` turns that into the `<section>` /
+`<command>` / `<warning>` tree shown above. AsciiDoc was, in fact, *designed* as
+a more writable front-end for DocBook — the XML never disappears, it just stops
+being the thing humans touch. DocBook (or HTML, or PDF) becomes the durable
+**interchange and output** layer underneath.
+
+That is the same theme this whole section keeps hitting: **XML earns its keep
+where interchange, validation, and longevity matter — less so where people
+type.** Within XML proper there is no newer documentation vocabulary displacing
+DocBook; the one thriving modern XML doc format,
+**[JATS](https://jats.nlm.nih.gov/)** (the Journal Article Tag Suite), lives in
+exactly the niche where archival XML still wins outright: scholarly publishing.
+The XML stayed; the *typing* moved on.

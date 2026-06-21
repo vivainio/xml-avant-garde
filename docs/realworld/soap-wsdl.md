@@ -90,7 +90,8 @@ defines the message *types*, and the service's own target namespace.
     the document's *own* `targetNamespace`, so the WSDL can refer to its own
     definitions.
 3.  The `portType` is the abstract interface — operations with inputs and outputs.
-    A `binding` (omitted) then says "do this over SOAP-over-HTTP". The layering is
+    A `binding` then says "do this over SOAP-over-HTTP" (the
+    [next section](#the-binding-where-the-wsdl-meets-soap)). The layering is
     deliberate: *what* the service does is separate from *how* it is transported.
 
 !!! note "`tns` and `targetNamespace` point at the same URI"
@@ -122,6 +123,54 @@ wsdl http://travel.example.org/reservation
 Read top to bottom, that is the whole service in eight lines: a `reserve` element
 (two fields), a `message` that wraps it, and a `portType` operation that takes it
 as input. The XML said the same thing in forty lines across four namespaces.
+
+## The binding: where the WSDL meets SOAP
+
+Everything above is *abstract* — it never says how the operation crosses the wire.
+That is the `binding`'s job, and it is the actual hinge between the two specs in
+this page's title. The `binding` takes the abstract `portType` and pins it to a
+concrete protocol; the `service` then says at which URL it lives.
+
+``` xml title="booking.wsdl (the concrete half)" linenums="1"
+<wsdl:binding name="BookingSoap" type="tns:BookingPort">   <!-- (1)! -->
+  <soap:binding style="document"
+                transport="http://schemas.xmlsoap.org/soap/http"/>
+  <wsdl:operation name="Reserve">
+    <soap:operation soapAction="http://travel.example.org/reserve"/>  <!-- (2)! -->
+    <wsdl:input>
+      <soap:body use="literal"/>                           <!-- (3)! -->
+    </wsdl:input>
+  </wsdl:operation>
+</wsdl:binding>
+<wsdl:service name="BookingService">                       <!-- (4)! -->
+  <wsdl:port name="BookingSoap" binding="tns:BookingSoap">
+    <soap:address location="https://travel.example.org/booking"/>
+  </wsdl:port>
+</wsdl:service>
+```
+
+1.  `type="tns:BookingPort"` is the join: this binding *is* the abstract
+    `portType` from above, now made concrete. `soap:binding` declares the style
+    (**document** — see (3)) and that the transport is SOAP over HTTP.
+2.  `soap:operation` gives the `Reserve` operation its **SOAPAction** — the value
+    that goes in the HTTP `SOAPAction` header, which servers and intermediaries can
+    route on without parsing the body.
+3.  `soap:body use="literal"` is the modern default: the SOAP `Body` carries the
+    `reserve` element from `wsdl:types` *verbatim*, exactly as the schema defines
+    it. (The legacy alternative, `rpc/encoded`, synthesized wrapper elements and
+    type attributes instead; you will see it in old services, and it is best
+    avoided.) This is **why** the `m:reserve` payload in the
+    [envelope at the top of this page](#the-envelope) looks the way it does — the
+    binding dictated it.
+4.  `service` / `port` is the concrete endpoint: `soap:address location` is the URL
+    you actually POST the envelope to. So the three layers read as a sentence —
+    *portType* is **what**, *binding* is **how**, *service* is **where**.
+
+!!! note "The `soap:` binding prefix is itself version-specific"
+    The `soap:` prefix here is `http://schemas.xmlsoap.org/wsdl/soap/` — the
+    **SOAP 1.1** WSDL binding. A SOAP 1.2 service uses a different one
+    (`…/wsdl/soap12/`), the same versioning-by-namespace idea as the envelopes
+    below.
 
 ## Two SOAP namespaces in the wild
 

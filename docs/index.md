@@ -9,10 +9,11 @@ introduced with a small, complete example — no walls of prose before you see
 real code. New here, or [returning after a while](preface.md)? Start anywhere.
 
 The site covers the core of the XML processing stack — **XSLT**, **XPath**,
-**XQuery**, and **XSD** — plus **Schematron**, the rule-based validation layer
-that the invoicing world leans on heavily. It then puts them all together on
-**real-world e-invoicing** (UBL, EN16931, Peppol) and a tour of **real-world
-XML applications** (SVG, SOAP, Office formats, and more).
+**XQuery**, and **XSD** — plus industry-specific applications built on top, like
+**Schematron** rule validation and the e-invoicing world of **UBL**, **EN16931**,
+and **Peppol**. It then puts them all together on **real-world e-invoicing**, and
+takes a tour of **real-world XML applications** (SVG, SOAP, Office formats, and
+more).
 
 [Start the XSLT tutorial :material-arrow-right:](xslt/index.md){ .md-button .md-button--primary }
 

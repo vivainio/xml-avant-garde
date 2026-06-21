@@ -15,7 +15,9 @@ And the material for someone *returning* to all this is rough going. Most of
 what's online is either a tedious from-zero tutorial that spends three screens
 on what a tag is, a spec page written for compiler authors, or a 2004 blog post
 half of whose advice is now obsolete — verbose, dated, and aimed at someone
-who's never seen any of this before.
+who's never seen any of this before. And that's before the presentation: the
+pages are often annoyingly formatted, buried in interstitials, or plastered with
+advertisements you have to read around.
 
 There's a reputation to address, too. XML, the popular imagination holds, is the
 domain of fifty-year-old Java developers who listen to Dire Straits and remember

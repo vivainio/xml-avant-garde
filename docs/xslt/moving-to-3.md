@@ -176,6 +176,9 @@ catalog/cd/price => sum()                      <!-- (5)! -->
     of the call on the right — `catalog/cd/price => sum()` is `sum(catalog/cd/price)`,
     but reads left-to-right and chains cleanly.
 
+These, the `!` simple map operator, the `?` lookup, and the inline type tests
+get a page of their own: [advanced XPath 3 expressions](xpath-advanced.md).
+
 ## What else is new
 
 A quick map of the bigger features, each covered on its own page:
@@ -185,10 +188,12 @@ A quick map of the bigger features, each covered on its own page:
 | Sequences & types | The `as=` type system that underpins everything below | [sequences and types](sequences-and-types.md) |
 | User-defined functions | Write your own XPath functions with `xsl:function` | [functions](functions.md) |
 | Higher-order functions | Functions as values: `fold-left`, `filter`, `=>` | [higher-order functions](higher-order-functions.md) |
+| Advanced XPath | `!`, `=>`, `for`/`let`/`some`/`every`, `if`, type tests | [advanced XPath 3 expressions](xpath-advanced.md) |
 | New functions | The 2.0/3.0/3.1 library additions, as a reference | [new functions](new-functions.md) |
 | Maps & arrays | Dictionaries and nested lists, the 3.1 data structures | [maps and arrays](maps-and-arrays.md) |
 | Reading & writing JSON | `parse-json`, maps & arrays, `method="json"` | [JSON](json.md) |
 | Grouping | `xsl:for-each-group` replaces the 1.0 "Muenchian" trick | [grouping](grouping.md) |
+| Iteration | `xsl:iterate` — a loop that threads state and can `break` | [iteration](iterate.md) |
 | Regex & strings | `matches`, `replace`, `tokenize`, `xsl:analyze-string` | [regex](regex.md) |
 | Non-XML text I/O | `unparsed-text`, `parse-xml`, `serialize`, CSV ⇄ XML | [text and parsing](text-and-parsing.md) |
 | Dates & times | Real date types, arithmetic, and `format-date` | [dates and times](dates-and-times.md) |

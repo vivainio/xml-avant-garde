@@ -76,7 +76,11 @@ goes by, so the total is ready by the end of the document without a second pass.
 
 `xsl:for-each` cannot thread state from one item to the next. `xsl:iterate` can:
 it carries `xsl:param` values across iterations (`xsl:next-iteration`) and can
-stop early (`xsl:break`), all within the single-pass rules:
+stop early (`xsl:break`), all within the single-pass rules. It is also the one
+loop that is *allowed* in a stream, because it never looks backward. Its full
+treatment — `xsl:on-completion`, `xsl:break`, and when to prefer it over
+`fold-left` or recursion — is on the [iteration page](iterate.md); here is the
+streaming-relevant shape:
 
 ``` xml
 <xsl:iterate select="catalog/cd">

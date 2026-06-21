@@ -297,11 +297,13 @@ XPath 2.0 and 3.0 rework the foundations:
   (`matches`, `replace`, `tokenize`), full **date and time** arithmetic,
   `string-join`, `upper-case` / `lower-case`, `min`, `max`, `avg`, `distinct-values`,
   and many more.
-- You can define your **own functions** and use `for`, `if`, `some`, and `every`
-  expressions inline.
+- New **operators and inline expressions**: the `!` simple map, the `=>` arrow,
+  `for` / `let` / `if` / `some` / `every`, and the `instance of` / `cast` type
+  tests — plus your **own functions**.
 
 These need a 2.0+ processor — the same one behind XSLT 2.0/3.0. The XSLT
 Tutorial covers the territory: [Moving to XSLT 2.0 and 3.0](../xslt/moving-to-3.md),
+[advanced XPath 3 expressions](../xslt/xpath-advanced.md) for the operators above,
 [Regular expressions and strings](../xslt/regex.md), and
 [User-defined functions](../xslt/functions.md).
 

@@ -107,6 +107,40 @@ instead of one big `w:`, it uses **many** small, semantic namespaces — `office
     ([next-but-one page](xsl-fo-fop.md)) for formatting properties rather than
     inventing its own.
 
+## Editing a document by hand
+
+Because the package is *just a ZIP of text*, you can change a document with nothing
+but `unzip`, an editor, and `zip` — no Office libraries at all. This is the most
+direct way to feel what the format really is:
+
+``` bash
+unzip report.docx -d report/         # explode the package
+unxml report/word/document.xml       # read the part compactly (or edit it)
+# … change "Quarterly report" to "Annual report" in word/document.xml …
+cd report && zip -r ../edited.docx . && cd ..   # repackage
+# edited.docx opens in Word with the edited heading
+```
+
+Three things make this work — and one that quietly breaks it:
+
+- The edit is **text in, text out**. As long as you keep `document.xml`
+  well-formed and do not touch the `[Content_Types].xml` that names each part,
+  Word reads your hand-edited package without complaint.
+- Binary assets (the `media/logo.png` from the `.rels`) are copied through the
+  zip untouched; you are only ever editing the XML parts.
+- Mail-merge and report generation in the wild are often exactly this: unzip a
+  template, string-replace tokens in `document.xml`, rezip. No COM automation,
+  no headless Word.
+
+!!! warning "ODF's `mimetype` must be stored first and uncompressed"
+    `.odt`/`.ods` files carry a `mimetype` entry that **must be the very first
+    member of the archive and stored without compression** — it lets a tool
+    identify the file type by reading the first few bytes, before parsing any XML.
+    A blind `zip -r` compresses it and reorders the entries, and some readers then
+    refuse the file. The fix is to add it first, stored: `zip -X0 out.odt mimetype`
+    then `zip -rX out.odt . -x mimetype`. OOXML has no such rule — its type map
+    lives in `[Content_Types].xml` inside the package instead.
+
 ## Querying Office XML
 
 Both formats are heavily namespaced, so — exactly as with

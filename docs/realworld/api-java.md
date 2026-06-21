@@ -128,6 +128,12 @@ t.transform(new StreamSource(new File("invoice.xml")),
     Apache FOP to get a PDF. Saxon's `s9api` namespace handling is also far nicer
     than JAXP's: `XPathCompiler.declareNamespace("i", "urn:example:invoice")`.
 
+!!! tip "Going deeper: parameters and Java extensions"
+    Feeding parameters into a transform, calling specific entry points
+    (`applyTemplates` / `callTemplate` / `callFunction`), and extending the XSLT/XPath
+    language with your **own Java functions** are covered on the dedicated
+    [Saxon from Java](saxon-java.md) page.
+
 !!! warning "What Saxon-HE leaves out"
     The snippet above uses **Saxon-HE** (Home Edition) — the free, open-source
     (MPL 2.0) build, and the right default. It runs the full **XSLT 3.0 / XPath 3.1

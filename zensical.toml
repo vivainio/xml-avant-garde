@@ -116,6 +116,7 @@ nav = [
     { "XBRL" = "realworld/xbrl.md" },
     { "Working with XML in code" = "realworld/xml-in-code.md" },
     { "APIs: Java (JAXP & Saxon)" = "realworld/api-java.md" },
+    { "Saxon from Java: parameters & extensions" = "realworld/saxon-java.md" },
     { "APIs: .NET" = "realworld/api-dotnet.md" },
     { "APIs: Python (lxml)" = "realworld/api-python.md" },
     { "APIs: Rust" = "realworld/api-rust.md" },

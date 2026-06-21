@@ -107,6 +107,36 @@ base.
     **unqualified** and bolts extensions on. Both end up extensible — the route
     differs.
 
+## Querying a feed — the default-namespace trap
+
+That "whole core in a namespace" choice has a sharp practical edge, and it is the
+single thing that trips people parsing Atom for the first time. The feed declares
+its namespace with **no prefix** (`xmlns="http://www.w3.org/2005/Atom"`), so it is
+tempting to read `<title>` as if it were unqualified. It is not — it is in the Atom
+namespace. The naïve query finds nothing:
+
+```text
+//title          ->  (no matches)          # "title in NO namespace" — there are none
+//entry/title    ->  (no matches)          # same trap, one level down
+```
+
+This is the exact [XPath 1.0 rule](../xpath/node-tests-predicates.md) met on the
+[SVG](svg.md#querying-namespaced-svg-with-xpath) and
+[Office](office-ooxml-odf.md#querying-office-xml) pages: an unprefixed name in a
+query means *no namespace*, and a **default** `xmlns` is still a namespace. You
+must bind a prefix of your own — the document has none to copy — and use it:
+
+```text
+your prefix map:   a -> http://www.w3.org/2005/Atom
+your query:        //a:entry/a:title         ->  matches every entry title
+```
+
+The prefix `a` is yours; only the URI matters. RSS 2.0 inverts the surprise: its
+core *is* unqualified, so `//item/title` works directly — but the moment you reach
+for `<content:encoded>` you are back to binding `content` to its namespace URI. The
+rule is uniform; which elements it bites just depends on where each format drew the
+namespace line.
+
 ## Things to note
 
 - A small, stable core plus a **wildcard extension point** beats one ever-growing

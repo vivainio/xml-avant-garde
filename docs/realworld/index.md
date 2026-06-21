@@ -76,8 +76,9 @@ are ordered roughly from "you see it every day" to "you only see it in finance".
 | 5 | [**Atom & feed extensions**](atom-feeds.md) | *Extending* a base vocabulary — Dublin Core, iTunes podcast tags — without touching it |
 | 6 | [**XSL-FO & Apache FOP**](xsl-fo-fop.md) | A vocabulary that is *generated*, not authored: XSLT → `fo:` → PDF |
 | 7 | [**XML Signature**](xml-dsig.md) | Why namespaces force **canonicalization**: signing bytes that mean the same thing |
-| 8 | [**GPX & KML**](geo-gpx-kml.md) | Two geo vocabularies, two extension styles (`<extensions>` vs a `gx:` prefix) |
-| 9 | [**XBRL**](xbrl.md) | Namespacing taken to the limit: a taxonomy of concepts in *your* namespace, built on `xbrli:` |
+| 8 | [**SAML**](saml.md) | Signed assertions and SSO: four namespaces (`saml:`/`samlp:`/`ds:`/`md:`), one per layer, and XML-DSig doing real work |
+| 9 | [**GPX & KML**](geo-gpx-kml.md) | Two geo vocabularies, two extension styles (`<extensions>` vs a `gx:` prefix) |
+| 10 | [**XBRL**](xbrl.md) | Namespacing taken to the limit: a taxonomy of concepts in *your* namespace, built on `xbrli:` |
 
 ## The tour — working with XML in code
 

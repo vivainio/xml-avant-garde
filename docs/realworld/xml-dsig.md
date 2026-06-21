@@ -110,5 +110,5 @@ flowchart LR
 - Signatures, like everything else here, are just another namespaced vocabulary
   (`…/xmldsig#`) that nests cleanly inside whatever it protects.
 
-Next: [GPX and KML](geo-gpx-kml.md) — back to friendlier ground, with two
-geospatial vocabularies and two different ways of allowing extensions.
+Next: [SAML](saml.md) — where this exact signature machinery does its biggest
+real-world job: trusting a login.

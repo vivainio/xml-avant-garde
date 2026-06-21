@@ -111,6 +111,7 @@ nav = [
     { "Atom and feed extensions" = "realworld/atom-feeds.md" },
     { "XSL-FO and Apache FOP" = "realworld/xsl-fo-fop.md" },
     { "XML Signature" = "realworld/xml-dsig.md" },
+    { "SAML" = "realworld/saml.md" },
     { "GPX and KML" = "realworld/geo-gpx-kml.md" },
     { "XBRL" = "realworld/xbrl.md" },
     { "Working with XML in code" = "realworld/xml-in-code.md" },

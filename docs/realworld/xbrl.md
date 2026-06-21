@@ -131,8 +131,8 @@ to the reported total).
 
 ---
 
-That is the tour. Across eight vocabularies the same handful of namespace moves
-kept reappearing — default vs prefixed, borrowing (`xlink`, `fo`, Dublin Core),
+That is the tour. Across every vocabulary the same handful of namespace moves
+kept reappearing — default vs prefixed, borrowing (`xlink`, `fo`, `ds`, Dublin Core),
 versioning by URI, and three flavors of extension (wildcard, container, reserved
 prefix, substitution group). Once you can spot those, most namespaced XML reads
 as familiar shapes — only more or less verbose. And when it is verbose, there's

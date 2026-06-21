@@ -52,4 +52,8 @@ than illustrative. It's built with [Zensical](https://zensical.org) and
 published on GitHub Pages. It's meant to be read, not consulted — written by
 someone who was standing exactly where you are.
 
+This is a living book. I'm still finding my way back, so I'll keep adding
+material as I go — new corners of the stack, new vocabularies, more old things I
+only just learned. Check back; it grows.
+
 [Start the XSLT tutorial :material-arrow-right:](xslt/index.md){ .md-button .md-button--primary }

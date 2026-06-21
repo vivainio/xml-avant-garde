@@ -54,6 +54,8 @@ someone who was standing exactly where you are.
 
 This is a living book. I'm still finding my way back, so I'll keep adding
 material as I go — new corners of the stack, new vocabularies, more old things I
-only just learned. Check back; it grows.
+only just learned. Check back; it grows. And if there's a corner of the XML
+world you find interesting — or wish someone would explain — tell me: suggestions
+are welcome [on GitHub](https://github.com/vivainio/xml-avant-garde/issues).
 
 [Start the XSLT tutorial :material-arrow-right:](xslt/index.md){ .md-button .md-button--primary }

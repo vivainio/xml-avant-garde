@@ -99,10 +99,6 @@ decisions:
                 exclude-result-prefixes="#all">
 
 <xsl:import href="param.xsl"/>                     <!-- (2)! -->
-<xsl:import href="modules/chunk.xsl"/>
-<xsl:import href="modules/chunk-cleanup.xsl"/>
-<xsl:import href="modules/chunk-output.xsl"/>
-<xsl:import href="modules/xform-locale.xsl"/>
 
 <xsl:include href="modules/variable.xsl"/>         <!-- (3)! -->
 <xsl:include href="modules/titles.xsl"/>
@@ -110,25 +106,35 @@ decisions:
 <xsl:include href="modules/blocks.xsl"/>
 <xsl:include href="modules/inlines.xsl"/>
 <xsl:include href="modules/lists.xsl"/>
-<!-- ...about 38 includes in all... -->
+<!-- ...41 includes in all... -->
+
+<xsl:import href="modules/chunk.xsl"/>             <!-- (4)! -->
+<xsl:import href="modules/chunk-cleanup.xsl"/>
+<xsl:import href="modules/chunk-output.xsl"/>
+<xsl:import href="modules/xform-locale.xsl"/>
 </xsl:stylesheet>
 ```
 
 1.  A **declared default mode**. Instead of the anonymous default mode, the whole
     pipeline runs in a *named* mode, `m:docbook`. Every `apply-templates` with no
     `mode=` runs here. See [template modes](modes.md).
-2.  The handful of `xsl:import`s are the parts a project legitimately replaces —
-    parameters (`param.xsl`) and the chunking strategy. Import = overridable.
-3.  The ~38 `xsl:include`s are the element-handling modules. Include = flat
+2.  `param.xsl` is **imported** — it holds the hundreds of overridable
+    parameters, and import precedence is what lets a downstream layer replace any
+    of them. Import = overridable.
+3.  The 41 `xsl:include`s are the element-handling modules. Include = flat
     textual merge at the same precedence, because these are *not* meant to be
     individually overridden; they collectively *are* the stylesheet.
+4.  The chunking strategy (how output is split across files) is **imported**, not
+    included — and, in the real file, at the *bottom*. Textual position does not
+    affect import precedence; what matters is that it arrives by `import`, so a
+    project can swap the whole chunking scheme.
 
 ```mermaid
 flowchart TD
     user["your customization layer<br/>(imports docbook.xsl)"] --> entry["docbook.xsl<br/>public entry"]
     entry -->|import| main["main.xsl<br/>aggregator"]
     main -->|import — overridable| params["param.xsl<br/>chunk*.xsl"]
-    main -->|include ×38 — flat merge| mods["modules/*.xsl<br/>blocks, inlines, lists,<br/>sections, tables, …"]
+    main -->|include ×41 — flat merge| mods["modules/*.xsl<br/>blocks, inlines, lists,<br/>sections, tables, …"]
 ```
 
 The split between `import` and `include` is not stylistic — it *is* the
@@ -258,7 +264,7 @@ long disjunction repeated across templates:
 And lookup tables that 1.0 would build as elements become **maps**, queried with
 `map:get`:
 
-``` xml title="modules/blocks.xsl (bridgehead, simplified)"
+``` xml title="modules/sections.xsl (bridgehead, simplified)"
 <xsl:when test="empty(map:get($v:bridgehead-map, $renderas))">
   <!-- not a known heading level: fall back to a div -->
 </xsl:when>
@@ -270,6 +276,110 @@ And lookup tables that 1.0 would build as elements become **maps**, queried with
 1.  `$v:bridgehead-map` maps a logical level (`"sect1"`) to an HTML element name
     (`"h2"`). A constant-time lookup replaces a `xsl:choose` ladder. See
     [maps and arrays](maps-and-arrays.md).
+
+## Zooming out with `unxml --xslt`
+
+The close-ups above are raw XSLT — the right way to *learn* a construct. But to
+*read* a stylesheet at scale, the angle brackets get in the way: `xsl:include`,
+`xsl:choose`/`xsl:when`, `xsl:value-of select="…"`, `xsl:function` with nested
+`xsl:param` — all of it is ceremony around a little structure. [`unxml
+--xslt`](https://github.com/vivainio/unxml-rs) (the same tool the
+[real-world section](../realworld/index.md) uses to render schemas) rewrites that
+ceremony into terse pseudocode, so a *wider* span of code fits on one screen. The
+notation:
+
+| `unxml --xslt` | XSLT it stands for |
+|----------------|--------------------|
+| `match X:`     | `xsl:template match="X"` |
+| `apply` / `apply .` | `xsl:apply-templates` (of children / of self) |
+| `<-- expr`     | `xsl:value-of` / `xsl:sequence select="expr"` |
+| `name as T := …` | a typed `xsl:variable` / `xsl:param` |
+| `function f:n(args) -> T:` | `xsl:function name="f:n" as="T"` |
+| `@x`, `element {…}` | an attribute / computed element in the result |
+| `choose: / when X: / else:` | `xsl:choose` / `xsl:when` / `xsl:otherwise` |
+
+!!! info "Generated, not hand-written"
+    Every rendered block below is the verbatim output of running the current
+    `unxml` on the actual xslTNG source — which is how the module count and import
+    order on this page were checked. It is genuinely faithful, not a paraphrase.
+
+### The whole spine, in one view
+
+`main.xsl` is 173 lines of XSLT. Rendered, its skeleton is a flat list — and the
+**import-vs-include split is visible at a glance**: one import on top, the
+element modules included, then the chunking strategy imported at the bottom.
+
+``` text title="unxml --xslt main.xsl (the wiring, trimmed)"
+  xsl:import(href="param.xsl")
+  xsl:include(href="VERSION.xsl")
+  xsl:include(href="modules/variable.xsl")
+  xsl:include(href="modules/space.xsl")
+  xsl:include(href="modules/unhandled.xsl")
+  xsl:include(href="modules/errors.xsl")
+  xsl:include(href="modules/head.xsl")
+  xsl:include(href="modules/titles.xsl")
+  xsl:include(href="modules/numbers.xsl")
+  xsl:include(href="modules/units.xsl")
+  xsl:include(href="modules/gentext.xsl")
+  xsl:include(href="modules/l10n.xsl")
+  xsl:include(href="modules/functions.xsl")
+  xsl:include(href="modules/toc.xsl")
+        … 28 more module includes …
+  xsl:import(href="modules/chunk.xsl")
+  xsl:import(href="modules/chunk-cleanup.xsl")
+  xsl:import(href="modules/chunk-output.xsl")
+  xsl:import(href="modules/xform-locale.xsl")
+```
+
+41 includes, 5 imports — and you can see at a glance *which is which*, the one
+thing the raw `<xsl:stylesheet>` header buries under namespace declarations.
+
+### A whole template, end to end
+
+The simplified `bridgehead` snippet earlier showed only the `map:get` punchline.
+Here is the **entire template** — the `renderas` variable's `choose` ladder *and*
+the map dispatch — at a size that is hopeless to follow in raw XSLT but fits in a
+screen here. Maps, modes, and a typed variable, all on one page:
+
+``` text title="unxml --xslt --select xsl:template sections.xsl (bridgehead)"
+match db:bridgehead:
+  renderas as string :=
+    choose:
+      when @renderas:
+        <-- @renderas/string()
+      when parent::db:section:
+        <-- 'sect' || (count(ancestor::db:section)+1)
+      when parent::db:sect5:
+        <-- 'sect5'
+      when parent::db:sect1|parent::db:sect2|parent::db:sect3|parent::db:sect4:
+        <-- 'sect' || (xs:integer(substring(local-name(parent::*), 5, 1)) + 1)
+      when parent::db:article|parent::db:chapter|parent::db:appendix
+                    |parent::db:preface|parent::db:partintro
+                    |parent::db:part|parent::db:reference:
+        <-- 'sect1'
+      else:
+        <-- 'block'
+  choose:
+    when empty(map:get($v:bridgehead-map, $renderas)):
+      xsl:message(select="'Unknown bridgehead renderas:', $renderas")
+      div
+        apply .
+        apply
+    when map:get($v:bridgehead-map, $renderas) = 'div':
+      div
+        apply .
+        apply
+    else:
+      element {map:get($v:bridgehead-map, $renderas)}:
+        apply .
+        apply
+```
+
+Read top to bottom: figure out a logical level (`sect1`…`sect5`, or `block`),
+then map that level to an HTML element (`h2`…`h5`, or `div`) and emit it around
+the processed content. That is one screen for a template that is ~50 lines of
+angle brackets in the source — which is exactly the point of reading at scale
+this way.
 
 ## Putting it together: how one element gets rendered
 

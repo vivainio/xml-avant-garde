@@ -26,7 +26,7 @@ inclusion. Everything ends up at **the same import precedence**.
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-<xsl:include href="base.xsl"/>          <!-- (1)! -->
+<xsl:include href="cd-templates.xsl"/>   <!-- (1)! -->
 
 <xsl:template match="/">
   <catalogue>
@@ -37,10 +37,11 @@ inclusion. Everything ends up at **the same import precedence**.
 </xsl:stylesheet>
 ```
 
-1.  Pulls in every template from `base.xsl` at the same precedence as the rules
-    written here. It is a top-level element — a direct child of `xsl:stylesheet`.
-2.  The `cd` template that handles these can live in `base.xsl`; the merge makes
-    it available exactly as if it were defined locally.
+1.  Pulls in every template from `cd-templates.xsl` at the same precedence as the
+    rules written here. It is a top-level element — a direct child of
+    `xsl:stylesheet`.
+2.  The `cd` template that handles these can live in `cd-templates.xsl`; the merge
+    makes it available exactly as if it were defined locally.
 
 !!! warning "Same precedence means conflicts are errors"
     Because an included stylesheet sits at the *same* precedence as the including
@@ -153,7 +154,8 @@ Two declarations of the same name at the *same* import precedence are an error
 (e.g. two global params with one name) — `import` exists precisely to put one of
 them lower so the clash resolves cleanly instead. The only kind with extra
 machinery is the template: `apply-imports` lets an override *reach back* to the
-rule it shadowed. There is no equivalent for "call the param I overrode" — for
+rule it shadowed (a [whole family of uses](reuse-templates.md) builds on that).
+There is no equivalent for "call the param I overrode" — for
 params, variables, and functions, the higher-precedence declaration simply
 replaces the lower one. That makes them the *simplest* things to override, which
 is why the most common pattern uses exactly them.
@@ -232,78 +234,17 @@ and so on — with the scaffold untouched.
     generated-plus-hand-written split — and shows why the two binding files want
     `include`, not `import`.
 
-## Templates add one more thing: reaching the shadowed rule
+## Templates add one more thing
 
-!!! note "Advanced — skip on a first read"
-    Everything above is the whole composition mechanism. This last section is one
-    extra trick that applies *only* to `match` templates; params, variables, and
-    functions neither have it nor need it.
-
-Overriding a `match` template works the same way — higher precedence wins — but
-templates have the one extra capability the table above noted: an override can
-re-run the rule it replaced, against the current node, with `xsl:apply-imports`.
-Here `base.xsl` provides a generic `cd` template the whole organisation shares:
-
-``` xml title="base.xsl" linenums="1"
-<?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-
-<xsl:template match="catalog">
-  <list>
-    <xsl:apply-templates select="cd"/>
-  </list>
-</xsl:template>
-
-<xsl:template match="cd">                 <!-- (1)! -->
-  <item>
-    <xsl:value-of select="title"/> — <xsl:value-of select="price"/>
-  </item>
-</xsl:template>
-
-</xsl:stylesheet>
-```
-
-1.  The generic rendering of a `<cd>`. Most projects are happy with it as-is.
-
-One project wants the same overall structure but a richer `cd` line — with the
-artist, and the price tagged. It imports the base and overrides **only** the
-`cd` template; the `catalog` template is inherited untouched.
-
-``` xml title="main.xsl" linenums="1"
-<?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-
-<xsl:import href="base.xsl"/>             <!-- (1)! -->
-
-<xsl:template match="cd">                 <!-- (2)! -->
-  <item>
-    <by><xsl:value-of select="artist"/></by>
-    <xsl:apply-imports/>                  <!-- (3)! -->
-  </item>
-</xsl:template>
-
-</xsl:stylesheet>
-```
-
-1.  First, as required. `base.xsl` is now lower-precedence.
-2.  Overrides the base `cd` template. The base `catalog` template still fires and
-    still calls `apply-templates select="cd"` — but now *this* rule answers.
-3.  `xsl:apply-imports` runs the template this one overrode — the lower-precedence
-    `cd` from `base.xsl` — against the **same** current node. So we add the artist,
-    then delegate the title/price line back to the base instead of duplicating it.
-
-Run against the [catalog](index.md#the-running-example):
-
-<div class="xslt-result" markdown>
-```
-<list><item><by>Bob Dylan</by><item>Empire Burlesque — 10.90</item></item>...</list>
-```
-</div>
-
-!!! tip "`apply-imports` is `super` for templates"
-    Think of it as calling the base class's method. It does not take a `select` —
-    it re-applies the imported templates for the **current** node only, letting an
-    override decorate the inherited output rather than replace it wholesale.
+Match templates are the one declaration kind with extra machinery: an override can
+re-run the rule it replaced, against the current node, with `xsl:apply-imports`
+(and its sibling `xsl:next-match`). That turns importing into a customization
+mechanism — inherit a body of rendering rules, override and *decorate* a few — with
+a family of real uses of its own: shared rendering bases, per-format layers, and
+customizing a third-party stylesheet you can't edit. Those have their own page:
+[Case study: reusing match templates](reuse-templates.md). Everything on *this*
+page is the whole composition mechanism without it; params and functions, the
+common seams, neither have that machinery nor need it.
 
 !!! note "Where `href` is resolved"
     For both `include` and `import`, `href` is resolved **relative to the
@@ -326,7 +267,8 @@ declarations over embedded code lists; **output-settings modules** centralise
 `xsl:output`, `xsl:strip-space`, and `xsl:decimal-format`. At larger scale the
 split turns structural rather than by-kind: a **base layer** others override,
 **per-output-format layers** (HTML vs print vs EPUB), a **module per element
-family**, and **modes** wiring them together — all of which the
+family**, and **modes** wiring them together — the layering of `match` templates
+that [reusing match templates](reuse-templates.md) covers, and that the
 [DocBook case study](at-scale.md) walks through in real code.
 
 Two things this page does *not* cover. Pulling in runtime *data* — a second XML

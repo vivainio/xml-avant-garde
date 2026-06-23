@@ -39,6 +39,7 @@ nav = [
     { "Whitespace and xsl:text" = "xslt/whitespace.md" },
     { "Template modes" = "xslt/modes.md" },
     { "Reusing stylesheets" = "xslt/reuse.md" },
+    { "Case study: reusing match templates" = "xslt/reuse-templates.md" },
     { "External documents" = "xslt/external-documents.md" },
     { "Keys and indexed lookup" = "xslt/keys.md" },
   ] },

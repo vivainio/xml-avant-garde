@@ -8,7 +8,7 @@ icon: lucide/layers-2
 `xsl:import` carry **every** top-level declaration across, and import precedence
 resolves clashes. For params, variables, and functions, overriding is the whole
 story — the higher-precedence declaration simply replaces the lower one, and that
-is why the [most common reuse patterns](reuse.md#worked-example-override-parameters-not-templates)
+is why the [most common reuse patterns](reuse.md#override-parameters-not-templates)
 never touch a `match` template.
 
 Match templates are the one declaration kind with **extra machinery**, and a whole
@@ -168,7 +168,7 @@ dozen of them must behave differently for your house style.
 1.  Import the whole upstream stylesheet, untouched and un-forked. It is now the
     lower-precedence layer; you never edit a line of it.
 2.  Tune behaviour the upstream exposes as a **parameter** — the simplest override,
-    no template needed (the [param pattern](reuse.md#worked-example-override-parameters-not-templates)).
+    no template needed (the [param pattern](reuse.md#override-parameters-not-templates)).
 3.  Override exactly one rendering rule, and use `apply-imports` to reuse the
     upstream's note-body rendering inside your own wrapper.
 

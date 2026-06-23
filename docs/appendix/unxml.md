@@ -185,6 +185,6 @@ the full set of schema transformations is documented in the
 
 !!! tip "It is itself an XML-processing program"
     `unxml` is written in Rust on top of the `quick-xml` streaming parser — so it
-    doubles as a worked example for the [Rust XML APIs](../realworld/api-rust.md)
+    doubles as a live example for the [Rust XML APIs](../realworld/api-rust.md)
     page. Reading XML compactly is, after all, just one more thing programs do
     with XML.

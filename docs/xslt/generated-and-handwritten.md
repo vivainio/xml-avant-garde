@@ -5,7 +5,7 @@ icon: lucide/layers
 # Case study: generated + hand-written mappings
 
 [Reusing stylesheets](reuse.md) showed *how* `xsl:include` and `xsl:import`
-compose top-level declarations. This page is a worked architecture for a problem
+compose top-level declarations. This page is a concrete architecture for a problem
 they solve together: a transformation where **most of the code is machine-generated
 and a minority is hand-written**, and the two must coexist without ever clobbering
 each other.
@@ -59,7 +59,7 @@ comes in by `import`. One real stylesheet uses both.
 ### 1. The scaffold — hand-authored, imported
 
 It owns all the UBL output and declares each term as a **bare parameter with no
-`select`** (the pattern from [reuse.md](reuse.md#worked-example-override-parameters-not-templates)).
+`select`** (the pattern from [reuse.md](reuse.md#override-parameters-not-templates)).
 It is the lowest layer, so everything else overrides it.
 
 ``` xml title="ubl-base.xsl" linenums="1"

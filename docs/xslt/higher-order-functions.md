@@ -76,7 +76,7 @@ argument of the next — the readable alternative to deeply nested parentheses:
 Both produce `country, pop, rock`, but the second reads in the order the data
 actually flows.
 
-## A worked example: sort by a computed key
+## Sort by a computed key
 
 `sort#3` takes a *key function*, so you can order by something the elements
 don't store directly — here, title length:

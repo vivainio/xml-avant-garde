@@ -176,7 +176,7 @@ when you want to be explicit, for example forcing a number into text:
 10.90
 </div>
 
-## Worked example: reformat an artist name
+## Reformat an artist name
 
 Suppose you want to turn `Bob Dylan` into `DYLAN, Bob` — surname first, in caps,
 then the given name. Splitting on the space gives both halves; `translate`

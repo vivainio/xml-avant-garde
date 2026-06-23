@@ -32,7 +32,7 @@ the value. The body is evaluated as a template and the result is captured as a
 ``` xml
 <xsl:variable name="heading">
   <h2>My CD Collection</h2>
-  <p>A small worked example.</p>
+  <p>A small example.</p>
 </xsl:variable>
 ```
 

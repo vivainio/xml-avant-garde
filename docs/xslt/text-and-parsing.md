@@ -45,7 +45,7 @@ not UTF-8 and not declared by the resource.
     </xsl:if>
     ```
 
-### Worked example: CSV → XML
+### CSV → XML
 
 The canonical text job. Read the lines, drop the header, [`tokenize`](regex.md)
 each row on commas, and build elements — the catalog you have been transforming
@@ -125,7 +125,7 @@ To emit a non-XML *file*, combine [`xsl:result-document`](result-documents.md)
 with `method="text"` — every node is flattened to its string value, no tags, no
 escaping of `<` and `&` beyond what text needs.
 
-### Worked example: XML → CSV
+### XML → CSV
 
 The round trip back out. Note `xsl:text` and `&#10;` to place the commas and
 newlines exactly:

@@ -134,7 +134,7 @@ holes in it:
     when `name` is `Bob`. (This is the same doubling rule attribute value
     templates have always used.)
 
-## Worked example: copy through, rewrite one element's text
+## Copy through, rewrite one element's text
 
 Combining both features: a stylesheet that turns on `expand-text` *and* uses
 `on-no-match="shallow-copy"`. The whole `catalog.xml` flows through unchanged,

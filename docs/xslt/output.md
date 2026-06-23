@@ -200,7 +200,7 @@ editing pipelines.
     unchanged. Use `xsl:copy` + `xsl:apply-templates` when you want to copy a
     node but still let templates transform its descendants.
 
-## Worked example: catalog → albums
+## Catalog → albums
 
 Putting it together. We turn `catalog.xml` into an `albums` document in a result
 namespace, with `indent="yes"`, and one **computed attribute** — an `id` whose

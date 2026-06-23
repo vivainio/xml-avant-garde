@@ -160,7 +160,7 @@ params, variables, and functions, the higher-precedence declaration simply
 replaces the lower one. That makes them the *simplest* things to override, which
 is why the most common pattern uses exactly them.
 
-## Worked example: override parameters, not templates
+## Override parameters, not templates
 
 This is the plainest use of `xsl:import` and the one that scales to real mapping
 work. A **base** stylesheet owns all the output — the templates, the types, the

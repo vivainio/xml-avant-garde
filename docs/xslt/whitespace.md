@@ -203,7 +203,7 @@ output stream.
     `disable-output-escaping` only when nothing else can inject the markup you
     need.
 
-## Worked example: title and artist, controlled separator
+## Title and artist, controlled separator
 
 The shared `catalog.xml`:
 

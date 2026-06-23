@@ -65,6 +65,7 @@ nav = [
     { "Streaming" = "xslt/streaming.md" },
     { "Packages" = "xslt/packages.md" },
     { "XSLT at scale: reading DocBook xslTNG" = "xslt/at-scale.md" },
+    { "Case study: generated + hand-written mappings" = "xslt/generated-and-handwritten.md" },
   ] },
   { "XPath" = [
     { "Overview" = "xpath/index.md" },

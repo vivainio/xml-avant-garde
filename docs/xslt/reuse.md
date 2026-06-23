@@ -53,9 +53,10 @@ inclusion. Everything ends up at **the same import precedence**.
 
 `xsl:import` brings in another stylesheet too, but its declarations get
 **lower import precedence** than the importing stylesheet. That single rule is
-what makes overriding possible: when both define the same thing — a template for
-the same nodes, a parameter of the same name, a function of the same signature —
-the importing stylesheet **wins**, no conflict, no error.
+what makes overriding possible: when both define the same thing — a parameter of
+the same name, a function of the same signature, a template for the same nodes —
+the importing stylesheet **wins**, no conflict, no error. The plainest case is a
+parameter:
 
 !!! warning "`xsl:import` must come first"
     All `xsl:import` elements must appear **before** every other top-level element
@@ -67,18 +68,18 @@ the importing stylesheet **wins**, no conflict, no error.
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-<xsl:import href="base.xsl"/>           <!-- (1)! -->
+<xsl:import href="base.xsl"/>                  <!-- (1)! -->
 
-<xsl:template match="cd">               <!-- (2)! -->
-  <feature><xsl:value-of select="title"/></feature>
-</xsl:template>
+<xsl:param name="heading" select="'Our catalogue'"/>   <!-- (2)! -->
 
 </xsl:stylesheet>
 ```
 
 1.  Must be the first top-level element. `base.xsl` is now at lower precedence.
-2.  This `cd` template overrides whatever `base.xsl` matched for `cd`, with no
-    conflict — the higher-precedence (importing) definition simply wins.
+2.  `base.xsl` also declares a global `heading` param; this one has higher import
+    precedence, so it wins — no conflict, no error. Overriding is just
+    "re-declare it higher up," and it works the same for a variable, a function,
+    or a template.
 
 ## include vs import at a glance
 
@@ -103,6 +104,50 @@ kind:
 | `xsl:template` (match) | higher precedence wins — *and* the shadowed rule is still reachable via `xsl:apply-imports` / `xsl:next-match` |
 | `xsl:key`, `xsl:attribute-set` | same-name declarations **combine** rather than override |
 | `xsl:output`, `xsl:decimal-format` | merged property-by-property |
+
+Each row is a different *kind of thing a stylesheet can declare* — and every one
+of them is what `import`/`include` carries across. Here is one of each in a single
+base module; the `match` template is just the last line, not the centre of gravity:
+
+``` xml title="base.xsl — one of each top-level declaration" linenums="1"
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet version="3.0"
+                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                xmlns:f="urn:example:fns"
+                exclude-result-prefixes="xs f"
+                expand-text="yes">
+
+  <xsl:output method="html" indent="yes"/>                       <!-- serialization settings -->
+  <xsl:strip-space elements="*"/>                                <!-- whitespace policy -->
+  <xsl:decimal-format name="eu" decimal-separator="," grouping-separator="."/>
+
+  <xsl:param name="title" as="xs:string" select="'Catalogue'"/>  <!-- global parameter -->
+  <xsl:variable name="version" select="'1.0'"/>                  <!-- global variable -->
+
+  <xsl:key name="cd-by-id" match="cd" use="@id"/>                <!-- index for key() -->
+
+  <xsl:attribute-set name="cell">                                <!-- reusable attributes -->
+    <xsl:attribute name="class">cell</xsl:attribute>
+  </xsl:attribute-set>
+
+  <xsl:function name="f:money" as="xs:string">                   <!-- helper function -->
+    <xsl:param name="n" as="xs:decimal"/>
+    <xsl:sequence select="format-number($n, '#.##0,00', 'eu')"/>
+  </xsl:function>
+
+  <xsl:template name="footer"><footer>{$version}</footer></xsl:template>  <!-- named template -->
+
+  <xsl:template match="cd"><li>{title}</li></xsl:template>       <!-- match template -->
+
+</xsl:stylesheet>
+```
+
+Import or include that, and *all* of it comes along — the output settings, the
+param, the variable, the key, the attribute-set, the function, both templates.
+A higher-precedence module redeclaring any of those names follows its row in the
+table above: `title` and `f:money` are replaced, `cell` and `cd-by-id` combine,
+the `output` settings merge.
 
 Two declarations of the same name at the *same* import precedence are an error
 (e.g. two global params with one name) — `import` exists precisely to put one of
@@ -189,6 +234,11 @@ and so on — with the scaffold untouched.
 
 ## Templates add one more thing: reaching the shadowed rule
 
+!!! note "Advanced — skip on a first read"
+    Everything above is the whole composition mechanism. This last section is one
+    extra trick that applies *only* to `match` templates; params, variables, and
+    functions neither have it nor need it.
+
 Overriding a `match` template works the same way — higher precedence wins — but
 templates have the one extra capability the table above noted: an override can
 re-run the rule it replaced, against the current node, with `xsl:apply-imports`.
@@ -261,6 +311,29 @@ Run against the [catalog](index.md#the-running-example):
     working directory. If `main.xsl` and `base.xsl` sit side by side,
     `href="base.xsl"` is correct; a base in a subfolder would be
     `href="common/base.xsl"`.
+
+## What goes in a module
+
+Once a stylesheet is more than one file, a handful of module shapes recur. The
+most common is a **function or helper library** — a file of `xsl:function`s (date
+and money formatting, string helpers, code-list lookups) with no `match`
+templates, `include`d wherever they are needed. Close behind is a **parameter
+module**, a file of global `xsl:param` defaults that downstream layers `import`
+and override — the configuration surface of [large stylesheets](at-scale.md) and
+the scaffold half of the [generated-plus-hand-written](generated-and-handwritten.md)
+pattern. **Lookup-data modules** hold `xsl:variable` maps or `xsl:key`
+declarations over embedded code lists; **output-settings modules** centralise
+`xsl:output`, `xsl:strip-space`, and `xsl:decimal-format`. At larger scale the
+split turns structural rather than by-kind: a **base layer** others override,
+**per-output-format layers** (HTML vs print vs EPUB), a **module per element
+family**, and **modes** wiring them together — all of which the
+[DocBook case study](at-scale.md) walks through in real code.
+
+Two things this page does *not* cover. Pulling in runtime *data* — a second XML
+file, JSON, plain text — is a different mechanism, not `import`/`include`; that is
+[external documents](external-documents.md), below. And for a genuine library with
+an *enforced* public surface rather than the textual merge `import` performs, XSLT
+3.0's [packages](packages.md) are the stronger tool.
 
 ## Next
 

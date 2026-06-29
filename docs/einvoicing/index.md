@@ -52,18 +52,26 @@ flowchart TD
    `cbc`/`cac`, and how EN16931's BT-/BG- business terms map onto the XML.
 2. [A UBL invoice in detail](ubl-invoice-detail.md) — the full OASIS example taken
    apart block by block, with the totals reconciled by hand.
-4. [The validation pipeline](validation-pipeline.md) — XSD, then EN16931
+3. [Anatomy of a CII invoice](cii-invoice.md) — the *other* EN16931 syntax
+   (UN/CEFACT, behind Factur-X/ZUGFeRD): the same invoice in `rsm:`/`ram:`, its
+   three-part spine, and its verbose naming conventions decoded.
+4. [A CII invoice in detail](cii-invoice-detail.md) — the verbatim CEN EN16931 CII
+   example (the same `TOSL108` business case as the UBL one) walked block by block,
+   with totals reconciled.
+5. [The validation pipeline](validation-pipeline.md) — XSD, then EN16931
    Schematron, then profile and code-list checks: what each layer is for.
-5. [Genericode code lists](genericode-codelists.md) — the `.gc` format, and
+6. [Genericode code lists](genericode-codelists.md) — the `.gc` format, and
    looking codes up efficiently with [`xsl:key`](../xslt/keys.md) or a
    [`map`](../xslt/json.md).
-6. [Peppol and CIUS profiles](peppol-cius.md) — how EN16931 is specialised for
+7. [Peppol and CIUS profiles](peppol-cius.md) — how EN16931 is specialised for
    real networks, and why a profile may only *narrow*, never loosen.
-7. [The Peppol network](peppol-network.md) — the four-corner model, Access Points,
+8. [The Peppol network](peppol-network.md) — the four-corner model, Access Points,
    SML/SMP discovery, and AS4: how an invoice is actually delivered.
 
-!!! note "Neutral data, with one real exception"
+!!! note "Neutral data, with two real exceptions"
     Most invoices on these pages use made-up parties and amounts — the
     *structure*, namespaces, rule identifiers and code lists are real, the business
-    data is not. The exception is [A UBL invoice in detail](ubl-invoice-detail.md),
-    which walks the verbatim public OASIS UBL 2.1 example.
+    data is not. The exceptions are the two *in detail* pages:
+    [A UBL invoice in detail](ubl-invoice-detail.md) walks the verbatim public OASIS
+    UBL 2.1 example, and [A CII invoice in detail](cii-invoice-detail.md) walks the
+    verbatim CEN EN16931 CII example.

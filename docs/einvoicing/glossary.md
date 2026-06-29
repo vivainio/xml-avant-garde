@@ -41,15 +41,33 @@ UBL
 
 CII
 :   *Cross Industry Invoice* (UN/CEFACT). The other XML syntax, using `rsm:`/`ram:`
-    namespaces. Carries the *same* business terms as UBL — different element names,
-    identical meaning. Why EN16931's rules are written as
+    namespaces and the syntax behind Factur-X/ZUGFeRD. Carries the *same* business
+    terms as UBL — different element names, identical meaning. Why EN16931's rules
+    are written as
     [abstract patterns bound twice](../schematron/abstract-patterns-en16931.md).
+    See [Anatomy of a CII invoice](cii-invoice.md).
 
 cbc / cac
 :   The two UBL namespaces you see on nearly every element. **`cbc`**
     (*CommonBasicComponents*) = leaf fields that hold a single value;
     **`cac`** (*CommonAggregateComponents*) = containers that hold other elements.
     Mnemonic: *cbc is a value, cac is a box.*
+
+rsm / ram / udt
+:   CII's namespaces. **`rsm`** = the *message* structure (the root and its three
+    top-level parts); **`ram`** (*Reusable Aggregate Business Information Entity*) =
+    almost everything, both groups and leaf fields; **`udt`** (*Unqualified Data
+    Type*) = low-level typed-value wrappers like `udt:DateTimeString`. Unlike UBL,
+    CII does **not** split leaf from container by namespace.
+
+CCTS / BIE
+:   *Core Component Technical Specification* — the UN/CEFACT method behind CII's
+    verbose names. Every element is a **Business Information Entity (BIE)** named as
+    *Object · Property · Representation*, which is why
+    `SpecifiedTradeSettlementHeaderMonetarySummation` reads as a sentence once
+    decomposed. Kinds: **ABIE** (aggregate), **ASBIE** (association to another
+    aggregate), **BBIE** (basic/leaf value). See
+    [Decoding the names](cii-invoice.md#decoding-the-names).
 
 ## Profiles — narrowing the core for real networks
 

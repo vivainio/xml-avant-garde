@@ -104,7 +104,8 @@ Factur-X / ZUGFeRD
     **Factur-X** is the identical French–German aligned profile (FNFE-MPE), central to
     France's B2B e-invoicing mandate. Both embed an EN16931-compliant CII document —
     the main reason CII is worth knowing even outside the [Peppol](peppol-network.md)
-    network.
+    network. See [Factur-X & ZUGFeRD](../realworld/facturx-zugferd.md) for how the XML
+    is embedded.
 
 CustomizationID (BT-24) / ProfileID (BT-23)
 :   The two fields by which an invoice **declares which rulebook and process it

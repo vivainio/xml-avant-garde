@@ -78,7 +78,8 @@ are ordered roughly from "you see it every day" to "you only see it in finance".
 | 7 | [**XML Signature**](xml-dsig.md) | Why namespaces force **canonicalization**: signing bytes that mean the same thing |
 | 8 | [**SAML**](saml.md) | Signed assertions and SSO: four namespaces (`saml:`/`samlp:`/`ds:`/`md:`), one per layer, and XML-DSig doing real work |
 | 9 | [**GPX & KML**](geo-gpx-kml.md) | Two geo vocabularies, two extension styles (`<extensions>` vs a `gx:` prefix) |
-| 10 | [**XBRL**](xbrl.md) | Namespacing taken to the limit: a taxonomy of concepts in *your* namespace, built on `xbrli:` |
+| 10 | [**Factur-X & ZUGFeRD**](facturx-zugferd.md) | XML as a *payload*, not the document: CII **embedded in a PDF/A-3**, with XMP (RDF/XML) as the describing metadata |
+| 11 | [**XBRL**](xbrl.md) | Namespacing taken to the limit: a taxonomy of concepts in *your* namespace, built on `xbrli:` |
 
 ## The tour — working with XML in code
 

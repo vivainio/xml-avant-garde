@@ -119,6 +119,7 @@ nav = [
     { "XML Signature" = "realworld/xml-dsig.md" },
     { "SAML" = "realworld/saml.md" },
     { "GPX and KML" = "realworld/geo-gpx-kml.md" },
+    { "Factur-X and ZUGFeRD" = "realworld/facturx-zugferd.md" },
     { "XBRL" = "realworld/xbrl.md" },
     { "Working with XML in code" = "realworld/xml-in-code.md" },
     { "APIs: Java (JAXP & Saxon)" = "realworld/api-java.md" },

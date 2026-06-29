@@ -97,6 +97,15 @@ Extension
     core. More powerful than a CIUS, but the result is no longer fully readable by a
     plain EN16931 receiver.
 
+Factur-X / ZUGFeRD
+:   **Hybrid** invoice formats: a human-readable **PDF/A-3** with the structured
+    invoice **embedded as [CII](cii-invoice.md) XML** inside it, so one file serves
+    both people and machines. **ZUGFeRD** is the German standard (published by FeRD);
+    **Factur-X** is the identical French–German aligned profile (FNFE-MPE), central to
+    France's B2B e-invoicing mandate. Both embed an EN16931-compliant CII document —
+    the main reason CII is worth knowing even outside the [Peppol](peppol-network.md)
+    network.
+
 CustomizationID (BT-24) / ProfileID (BT-23)
 :   The two fields by which an invoice **declares which rulebook and process it
     follows**. `CustomizationID` names the specification (plain EN16931, or a Peppol

@@ -2,8 +2,11 @@
 
 **CII** — UN/CEFACT's *Cross Industry Invoice* — is the second of the two XML
 syntaxes that can carry an [EN16931](index.md) invoice (the other is
-[UBL](ubl-invoice.md)). It is the syntax behind **Factur-X / ZUGFeRD** and France's
-**Factur-X** hybrid invoices. A CII invoice is a single XML document rooted at
+[UBL](ubl-invoice.md)). It is the syntax embedded inside
+**[Factur-X / ZUGFeRD](glossary.md#profiles-narrowing-the-core-for-real-networks)**
+hybrid PDF invoices, central
+to France's and Germany's e-invoicing mandates. A CII invoice is a single XML
+document rooted at
 `<rsm:CrossIndustryInvoice>`.
 
 This page walks **the same small invoice** as the [UBL anatomy](ubl-invoice.md) —

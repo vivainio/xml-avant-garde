@@ -4,6 +4,12 @@ icon: lucide/book-marked
 
 # New functions in 2.0 / 3.0 / 3.1
 
+This page is a **reference and refresher**, not the next required step in the
+linear tutorial. Read it straight through when surveying what changed, or return
+to it when an older XPath 1.0 idiom feels more complicated than it ought to be.
+The conceptual chapters link to the larger additions—regular expressions, maps,
+arrays, JSON, and higher-order functions—in context.
+
 The 1.0 function library is small — `count`, `string`, `concat`, `substring`,
 `translate`, and a handful more. Every version since has added to it. The big
 additions get their own pages ([regex](regex.md), [dates](dates-and-times.md),

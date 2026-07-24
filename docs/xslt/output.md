@@ -230,8 +230,13 @@ value is built from the position.
 
 1.  Two attribute value templates: `id` is computed from `position()`
     (`a1`, `a2`, …), and `price` lifts the child `<price>` element up into an
-    attribute. Both attributes inherit the `http://example.org/albums` namespace
-    declared on the root.
+    attribute. The result elements inherit the
+    `http://example.org/albums` default namespace declared on the root, but the
+    unprefixed `id` and `price` attributes do **not**. XML Namespaces deliberately
+    treats default namespaces as applying to unprefixed element names only;
+    unprefixed attributes remain in no namespace. If a target vocabulary
+    requires a namespaced attribute, give it an explicit prefix (or construct it
+    with `xsl:attribute` and a namespace).
 
 Applied to the shared `catalog.xml`, the result is:
 

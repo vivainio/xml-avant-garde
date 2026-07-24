@@ -223,5 +223,7 @@ Greatest Hits
 
 ## Next
 
-Predicates often test text, and real filters need to trim, match, and compare
-strings precisely — see [String functions](strings.md).
+Predicates select nodes for instructions and match rules. The next chapter adds
+the other way to reuse work: [named templates and parameters](named-templates.md),
+which are called deliberately, accept arguments, and provide the recursive loop
+idiom used in XSLT 1.0.

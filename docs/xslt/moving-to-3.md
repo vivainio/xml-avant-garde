@@ -48,13 +48,22 @@ You switch versions with one attribute on the stylesheet element:
 2.  The `xs:` namespace is what lets you name types like `xs:string` and
     `xs:integer` in `as=` attributes (see below).
 
-!!! note "Browsers do 1.0 only; you need Saxon"
-    Web browsers ship a 1.0 processor and nothing newer, so a stylesheet
-    declaring `version="2.0"` or `"3.0"` will **not** run in the browser. For
-    2.0/3.0 you run the transformation through a modern processor — **Saxon** is
-    the reference implementation and the one these pages assume. The version
-    declaration is also a request, not a guarantee: a 1.0 engine handed a
-    `version="3.0"` stylesheet will fall back to 1.0 behaviour rather than error.
+!!! note "Browser support stopped at 1.0 — and is being removed"
+    Native browser implementations never advanced beyond XSLT 1.0. Chromium has
+    now deprecated that implementation and
+    [plans to remove it from stable Chrome in late
+    2026](https://developer.chrome.com/docs/web-platform/deprecating-xslt);
+    Firefox and WebKit have indicated removal plans too. A stylesheet declaring
+    `version="2.0"` or `"3.0"` therefore needs a modern processor — **Saxon** is
+    the reference implementation and the one these pages assume.
+
+    The version declaration is also a request, not a guarantee. A 1.0 engine
+    handed a higher-version stylesheet enters **forwards-compatible
+    processing**: it can continue through constructs it understands, but
+    unsupported constructs may still fail when they are required. That
+    compatibility mechanism does not turn a 1.0 processor into a 3.0 processor,
+    so use a processor that implements the version your stylesheet actually
+    needs.
 
 ## The headline change: sequences
 
@@ -218,7 +227,7 @@ A quick map of the bigger features, each covered on its own page:
 | Grouping | Hand-rolled (Muenchian keys) | `xsl:for-each-group` |
 | String tools | `translate`, `substring-before/after` | `matches`, `replace`, `tokenize`, `upper-case`, … |
 | XPath | Location paths, basic predicates | `for` / `let` / `some` / `every`, `=>` (3.0) |
-| Runs in | Every browser and processor | Saxon and other modern processors only |
+| Runs in | Conforming 1.0 processors; legacy browser support is being removed | Saxon and other modern processors |
 
 ## Next
 

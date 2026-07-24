@@ -72,5 +72,6 @@ within the loop — handy for striping rows or numbering items.
 
 ## Next
 
-Output often needs to depend on the data — highlight expensive CDs, skip empty
-fields. That is the job of [conditionals](conditionals.md).
+The expressions used for output are often repeated or worth naming.
+[Variables](variables.md) show how to bind those values, why an XSLT variable
+cannot be reassigned, and how its scope follows the stylesheet structure.

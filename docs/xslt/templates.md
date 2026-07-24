@@ -51,15 +51,26 @@ single-template one from the [previous page](first-transformation.md):
 3.  A template for `title`. `select="."` means "the current node" — here, the
     `title` element whose text we want.
 
-Each rule has one job. Adding a `<year>` field later means adding one small
-template, not editing a monolith.
+Each rule has one job. There is one important qualification: this particular
+`cd` template delegates only to `title` and `artist`. Adding a `<year>` rule
+alone would therefore not make the year appear, because no instruction reaches
+the `year` node. You would either add
+`<xsl:apply-templates select="year"/>` to the `cd` template, or deliberately
+switch it to a bare `<xsl:apply-templates/>` so every child is offered to the
+template rules. Once a node is part of that walk, changing how it renders means
+editing its small template rather than a monolith.
 
 ## How a node is matched
 
 `xsl:apply-templates` selects a set of nodes (its children by default, or
 whatever `select` names). For each node, the processor picks the **best-matching**
 template by its `match` pattern. The patterns above (`cd`, `title`, `artist`)
-are XPath expressions evaluated relative to the current node.
+use XPath-like syntax, but a match pattern is not an ordinary XPath expression.
+An XPath `select` starts at a context node and navigates to a result; a match
+pattern works in the other direction conceptually, asking whether the candidate
+node has the required name, ancestry, or other pattern properties. The pattern
+`cd`, for example, matches a candidate `cd` element wherever the processing
+walk reaches one; it does not select a `cd` child relative to some other node.
 
 ## A template only fires when it is reached
 
@@ -168,5 +179,7 @@ You now have two ways to walk a document:
 | `xsl:apply-templates` | The processor, by matching | Content is mixed, recursive, or reused |
 
 Match templates handle "for every node of this kind." When you instead need a
-reusable routine you can call by name and pass arguments to, you want
-[named templates and parameters](named-templates.md).
+direct loop and explicit text output, continue with
+[loops and output](loops-and-output.md). Named templates come later, after
+variables and conditionals, when their parameters and recursive structure have
+more familiar foundations.

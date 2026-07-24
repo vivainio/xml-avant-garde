@@ -219,5 +219,6 @@ itself; use `xsl:param` for a value someone else gets to choose.
 
 ## Next
 
-Variables capture values; [loops and output](loops-and-output.md) put those
-values to work by iterating over your data and writing the result.
+Variables capture values; output often needs to depend on those values —
+highlight an expensive CD, omit an empty field, or choose one of several result
+shapes. That is the job of [conditionals](conditionals.md).

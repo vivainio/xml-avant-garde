@@ -4,6 +4,11 @@ icon: lucide/layers-2
 
 # Case study: reusing match templates
 
+This case study crosses the version boundary deliberately.
+`xsl:apply-imports` has existed since XSLT 1.0; `xsl:next-match`, introduced
+later in the chapter, requires XSLT 2.0 or 3.0. The distinction is marked where
+the newer instruction appears.
+
 [Reusing stylesheets](reuse.md) made the general point: `xsl:include` and
 `xsl:import` carry **every** top-level declaration across, and import precedence
 resolves clashes. For params, variables, and functions, overriding is the whole

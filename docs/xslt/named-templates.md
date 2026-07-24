@@ -266,6 +266,6 @@ be invoked directly by name.
 
 ## Next
 
-Both `xsl:param` and `xsl:with-param` introduce *bindings* you read with `$name`.
-[Variables](variables.md) covers `xsl:variable` — the third member of that family,
-and why "variable" in XSLT does not mean what it does elsewhere.
+Named-template recursion often manipulates text by peeling off one piece at a
+time. [String functions](strings.md) covers the XPath 1.0 toolbox used for that
+work: joining, slicing, testing, normalising, and character mapping.

@@ -112,5 +112,9 @@ than re-learning the data:
 ## Where to go next
 
 1. [FLWOR expressions](flwor.md) — `for`/`let`/`where`/`order by`/`return`, `group by`, and building XML output.
-2. [XQuery vs XSLT](xquery-vs-xslt.md) — two languages, one data model: when to reach for which.
-3. [XQuery in the real world](real-world.md) — native XML databases, RESTXQ web apps, the Update Facility, and embedded SQL XQuery.
+2. [Sequences, comparisons, and the XDM](sequences-and-xdm.md) — the value model underneath every query, including empty sequences, cardinality, and comparison semantics.
+3. [Joining XML documents](joins.md) — inner, outer, and anti-joins across files or indexed collections.
+4. [Maps, arrays, and JSON](maps-arrays-json.md) — indexed lookups, nested data, XML/JSON joins, and JSON output.
+5. [Constructing XML precisely](constructing-xml.md) — direct and computed constructors, node copying, optional attributes, namespaces, and whitespace.
+6. [XQuery vs XSLT](xquery-vs-xslt.md) — two languages, one data model: when to reach for which.
+7. [XQuery in the real world](real-world.md) — native XML databases, RESTXQ web apps, the Update Facility, and embedded SQL XQuery.

@@ -66,10 +66,12 @@ The `xs:decimal(...)` cast matters: `$cd/price` is a node, and comparing a node
 to `9.90` works by atomization, but casting makes the numeric intent explicit
 and lets you do arithmetic on `$price` later.
 
-!!! note "`:=` binds, `=` compares"
-    XQuery uses `:=` in `let` and `for` bindings — the same spelling as in
+!!! note "`:=` binds; `=` compares"
+    A `let` clause binds with `:=`, while a `for` clause binds each item with
+    `in`. The same `:=` spelling appears in
     [XSLT 3.0's `let`](../xslt/moving-to-3.md), which it borrowed. A bare `=` is
-    the general comparison operator, as in [XPath](../xpath/functions-and-types.md).
+    the general comparison operator, as in
+    [Sequences, comparisons, and the XDM](sequences-and-xdm.md#general-comparisons-does-any-pair-match).
 
 ## `where` — filter
 
@@ -143,11 +145,11 @@ the element name itself must be computed, use a **computed constructor**:
 `element { $name } { $content }` and `attribute { $name } { $value }` — the
 analogue of [`xsl:element`](../xslt/output.md).
 
-!!! warning "Whitespace in constructors is literal"
-    Text between tags in a direct constructor is kept verbatim, including
-    newlines and indentation. Wrap dynamic content in `{ … }` and let the
-    [serializer](../xslt/whitespace.md) handle pretty-printing, rather than
-    relying on the layout of your query source.
+!!! note "Whitespace has its own construction rules"
+    XQuery normally strips whitespace used only to indent a direct constructor;
+    `declare boundary-space preserve` changes that policy. This is separate from
+    serializer indentation. [Constructing XML precisely](constructing-xml.md)
+    covers boundary whitespace, copied nodes, and namespaces.
 
 ## `input` functions
 
@@ -184,5 +186,8 @@ gets from [`xsl:include`/`xsl:import`](../xslt/reuse.md).
 
 ## Where to go next
 
+- [Sequences, comparisons, and the XDM](sequences-and-xdm.md) — what FLWOR
+  variables actually hold, and why `=` and `eq` answer different questions.
+- [Joining XML documents](joins.md) — connect records from separate files or
+  database collections.
 - [XQuery vs XSLT](xquery-vs-xslt.md) — the same data model from two directions.
-- [XQuery in the real world](real-world.md) — running these queries against a database.

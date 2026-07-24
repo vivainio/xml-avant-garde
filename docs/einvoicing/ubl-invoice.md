@@ -145,6 +145,7 @@ INV-001 — Contoso Wholesale AB: 27.25 EUR
 
 ## Next
 
-A well-formed invoice is only the start — it still has to *pass*. Next:
-[The validation pipeline](validation-pipeline.md) — the layered checks every
-invoice runs, and which layer catches what.
+Now stretch that compact example across a full, real document:
+[A UBL invoice in detail](ubl-invoice-detail.md) walks the official OASIS example
+from header to lines and reconciles its totals by hand. After that, the CII
+chapters show the same business model in the other EN16931 syntax.

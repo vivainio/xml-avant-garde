@@ -499,8 +499,8 @@ rule you meet is removing or pinning something you have now seen in the raw.
 
 ## Where next
 
-You have walked a complete invoice end to end. To see what *enforces* the
-consistency you just verified by hand, go to
-[The validation pipeline](validation-pipeline.md); for the lists behind every coded
-field, [Genericode code lists](genericode-codelists.md); and for any unfamiliar
-term, the [Glossary](glossary.md).
+You now know the full UBL shape. Continue with
+[Anatomy of a CII invoice](cii-invoice.md) to see the same small invoice expressed
+in EN16931's other syntax; its side-by-side comparison makes the shared business
+model and the different XML binding concrete. If you already know CII, jump ahead
+to [The validation pipeline](validation-pipeline.md).

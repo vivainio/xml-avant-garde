@@ -116,5 +116,8 @@ than re-learning the data:
 3. [Joining XML documents](joins.md) — inner, outer, and anti-joins across files or indexed collections.
 4. [Maps, arrays, and JSON](maps-arrays-json.md) — indexed lookups, nested data, XML/JSON joins, and JSON output.
 5. [Constructing XML precisely](constructing-xml.md) — direct and computed constructors, node copying, optional attributes, namespaces, and whitespace.
-6. [XQuery vs XSLT](xquery-vs-xslt.md) — two languages, one data model: when to reach for which.
-7. [XQuery in the real world](real-world.md) — native XML databases, RESTXQ web apps, the Update Facility, and embedded SQL XQuery.
+6. [Functions, modules, and error handling](functions-modules-errors.md) — typed APIs, recursion, higher-order functions, reusable modules, external variables, and deliberate failures.
+7. [Updating and indexing XML databases](updating-indexing.md) — persistent changes, pending updates, transactions, index-aware queries, and maintenance.
+8. [Capstone: query a collection of UBL invoices](invoice-report.md) — join invoices to supplier data, diagnose bad records, aggregate spend and VAT, and emit XML plus JSON.
+9. [XQuery vs XSLT](xquery-vs-xslt.md) — two languages, one data model: when to reach for which.
+10. [XQuery in the real world](real-world.md) — native XML databases, RESTXQ web apps, the Update Facility, and embedded SQL XQuery.

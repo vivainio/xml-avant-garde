@@ -52,7 +52,7 @@ function page:by-genre($genre as xs:string) {
 ```
 
 A request to `/cds/rock` runs the query and serializes the result — here as JSON,
-thanks to XQuery 3.1's [maps and arrays](flwor.md#group-by-aggregate-30). This
+thanks to XQuery 3.1's [maps and arrays](maps-arrays-json.md). This
 is how document-publishing platforms (scholarly journals on JATS, archives on
 TEI, legal corpora on Akoma Ntoso) are commonly built.
 
@@ -69,7 +69,9 @@ return replace value of node $cd/price with xs:decimal($cd/price) * 1.1
 
 `insert`, `delete`, `rename`, and `replace` node operations let XQuery serve as
 the update language too — closing the loop that XSLT, a pure transformation
-language, never tries to.
+language, never tries to. The full chapter,
+[Updating and indexing XML databases](updating-indexing.md), covers pending
+updates, transactions, query plans, and index maintenance.
 
 ## Embedded XQuery in relational databases
 

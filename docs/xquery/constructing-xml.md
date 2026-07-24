@@ -325,7 +325,7 @@ Those questions account for most constructor bugs.
 
 ## Where to go next
 
+- [Functions, modules, and error handling](functions-modules-errors.md) turns
+  query fragments into reusable, typed programs.
 - [XQuery vs XSLT](xquery-vs-xslt.md) compares constructors and FLWOR with
   template-driven result construction.
-- [XQuery in the real world](real-world.md) shows where queries are executed and
-  stored.
